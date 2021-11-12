@@ -56,31 +56,11 @@ public class HomeServlet extends HttpServlet {
                 requestDispatcher = req.getRequestDispatcher(forwardPage);
                 requestDispatcher.forward(req, resp);
             }
+            req.setAttribute("not found user", "User with such login and password not found");
+            requestDispatcher = req.getRequestDispatcher(WebAdresses.HOME_PAGE);
+            requestDispatcher.forward(req, resp);
         }
 
 
     }
-/*
-    private void process (HttpServletRequest req, HttpServletResponse resp) {
-
-        try {
-            DataSource ds = null;
-            Context initContext = new InitialContext();
-            Context envContext  = (Context)initContext.lookup("java:/comp/env");
-            ds = (DataSource)envContext.lookup("jdbc/TestDB");
-            Connection con = ds.getConnection();
-
-            Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * FROM users;");
-            while (resultSet.next()) {
-                String temp = resultSet.getString("roleName");
-                System.out.println(temp);
-            }
-            webadr = "/WEB-INF/pages/casherStart.jsp";
-        } catch (SQLException | NamingException e) {
-            e.printStackTrace();
-        }
-    }
-
- */
 }

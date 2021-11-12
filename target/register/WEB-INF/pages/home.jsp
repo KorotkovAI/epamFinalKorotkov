@@ -10,7 +10,11 @@
 <h3>Korotkov Oleksandr</h3>
 <h2>Cash Register</h2>
 </div>
+<%
+    String mes = (String) request.getAttribute("not found user");
+%>
 
+<p><h4><%=mes != null ? mes : ""%></h4> </p>
 <form action="" method="post">
     <table center>
         <tr>
@@ -21,6 +25,7 @@
             <td><label for="password">Password: </label></td>
             <td><input type="text" id="password" name="password" autofocus></td>
         </tr>
+
         <tr>
             <td><input type="submit" value="Login"></td>
             <td><input type="reset" value="Reset"></td>
