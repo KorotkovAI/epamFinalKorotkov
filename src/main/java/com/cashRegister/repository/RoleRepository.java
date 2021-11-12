@@ -1,7 +1,7 @@
 package com.cashRegister.repository;
 
+import com.cashRegister.exception.RoleNotFoundException;
 import com.cashRegister.model.Role;
-import com.cashRegister.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,22 +13,31 @@ import java.util.List;
 public class RoleRepository {
     private static final String SELECT_ALL_ROLES = "SELECT * FROM roles;";
 
-    public Role getRoleByName (Connection con, String name) throws Exception {
-        List<Role> roles = getAllRoles(con);
-        //roles.stream().forEach(System.out::println);
-        for (Role role: roles) {
+    private static RoleRepository roleRepository = null;
+
+    public synchronized static RoleRepository getRoleRepository() {
+        if (roleRepository == null) {
+            roleRepository = new RoleRepository();
+        }
+        return roleRepository;
+    }
+
+    public Role getRoleByName(String name) throws Exception {
+        List<Role> roles = getAllRoles();
+        for (Role role : roles) {
             if (role.getName().equals(name)) {
                 return role;
             }
         }
-        throw new Exception("role is null");
+        throw new RoleNotFoundException("role with NAME " + name + " not found");
     }
 
 
-    public List<Role> getAllRoles(Connection con) {
-        List <Role> roles = new ArrayList<>();
+    public List<Role> getAllRoles() {
+        List<Role> roles = new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = con.prepareStatement(SELECT_ALL_ROLES);
+            Connection connection = DbManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ROLES);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int roleId = rs.getInt("id");

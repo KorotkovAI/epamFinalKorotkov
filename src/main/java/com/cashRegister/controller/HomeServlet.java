@@ -1,9 +1,7 @@
 package com.cashRegister.controller;
 
-import com.cashRegister.model.Role;
 import com.cashRegister.model.User;
 import com.cashRegister.model.WebAdresses;
-import com.cashRegister.repository.DbManager;
 import com.cashRegister.repository.RoleRepository;
 import com.cashRegister.repository.UserRepository;
 
@@ -14,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.sql.*;
 
 @WebServlet(value = {"/", "/home"})
 public class HomeServlet extends HttpServlet {
@@ -22,8 +19,8 @@ public class HomeServlet extends HttpServlet {
     private RoleRepository roleRepository;
 
     public HomeServlet() {
-        this.userRepository = new UserRepository();
-        this.roleRepository = new RoleRepository();
+        this.userRepository = UserRepository.getUserRepository();
+        this.roleRepository = RoleRepository.getRoleRepository();
     }
 
     //WEB-INF/pages/home.jsp
@@ -37,12 +34,11 @@ public class HomeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        Connection con = DbManager.getConnection();
 
         String currentRole;
-        String forwardPage = null;
+        String forwardPage = WebAdresses.ERROR_PAGE;
         RequestDispatcher requestDispatcher;
-        for (User user : userRepository.getAllUsers(con)) {
+        for (User user : userRepository.getAllUsers()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 currentRole = user.getRoleName().getName();
                 try {

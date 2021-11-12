@@ -9,18 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository {
-    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/cashregister";
-    private static final String jdbcUser = "root";
-    private static final String jdbcPassword = "PppSQL2501!";
-
     private static final String INSERT_USER = "INSERT INTO users" +
             " (login, password, name, surname, roleName) VALUES " + " (?, ?, ?);";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users;";
 
     private RoleRepository roleRepository;
+    private static UserRepository userRepository = null;
+
+    public synchronized static UserRepository getUserRepository() {
+        if (userRepository == null) {
+            userRepository = new UserRepository();
+        }
+        return userRepository;
+    }
 
     public UserRepository() {
-        this.roleRepository = new RoleRepository();
+        roleRepository = RoleRepository.getRoleRepository();
     }
 
     /*
@@ -45,11 +49,12 @@ public class UserRepository {
         }
     }
 
-    public List<User> getAllUsers(Connection con) {
+    public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
 
         try {
-            PreparedStatement preparedStatement = con.prepareStatement(SELECT_ALL_USERS);
+            Connection connection = DbManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int userId = rs.getInt("id");
@@ -57,7 +62,7 @@ public class UserRepository {
                 String userPassword = rs.getString("password");
                 String userName = rs.getString("name");
                 String userSurname = rs.getString("surname");
-                Role userRoleName = roleRepository.getRoleByName(con, rs.getString("roleName"));
+                Role userRoleName = roleRepository.getRoleByName(rs.getString("roleName"));
                 users.add(new User(userId, userLogin, userPassword, userName, userSurname, userRoleName));
             }
         } catch (SQLException e2) {
