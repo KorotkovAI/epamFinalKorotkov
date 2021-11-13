@@ -1,17 +1,15 @@
 package com.cashRegister.controller;
 
-import com.cashRegister.model.User;
-import com.cashRegister.model.WebAdresses;
+import com.cashRegister.WebAdresses;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/serrr")
+
 public class AdminStartServlet extends HttpServlet {
 
     @Override

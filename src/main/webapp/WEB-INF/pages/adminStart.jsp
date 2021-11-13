@@ -10,7 +10,7 @@
 <%@include file="headerAdmin.html"%>
 <h2>Admin start page</h2>
 <%
-    User user = (User) request.getAttribute("user");
+    User user = (User) request.getSession().getAttribute("user");
 %>
 
 <p>Hello <b><%=user.getName()%> <%=user.getSurname()%></b> </p>

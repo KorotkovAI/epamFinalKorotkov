@@ -60,6 +60,7 @@ public class UserRepository {
                 int userId = rs.getInt("id");
                 String userLogin = rs.getString("login");
                 String userPassword = rs.getString("password");
+                //System.out.println(userLogin + userPassword);
                 String userName = rs.getString("name");
                 String userSurname = rs.getString("surname");
                 Role userRoleName = roleRepository.getRoleByName(rs.getString("roleName"));

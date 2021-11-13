@@ -1,9 +1,11 @@
 package com.cashRegister.controller;
 
 import com.cashRegister.model.User;
-import com.cashRegister.model.WebAdresses;
+import com.cashRegister.WebAdresses;
 import com.cashRegister.repository.RoleRepository;
 import com.cashRegister.repository.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +19,8 @@ import java.io.*;
 public class HomeServlet extends HttpServlet {
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+
+    private static final Logger log = LogManager.getLogger(HomeServlet.class);
 
     public HomeServlet() {
         this.userRepository = UserRepository.getUserRepository();
@@ -35,9 +39,12 @@ public class HomeServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
+        log.debug("get login " + login + " password" + password);
+
         String currentRole;
         String forwardPage = WebAdresses.ERROR_PAGE;
         RequestDispatcher requestDispatcher;
+
         for (User user : userRepository.getAllUsers()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 currentRole = user.getRoleName().getName();
@@ -47,20 +54,19 @@ public class HomeServlet extends HttpServlet {
                     } else if (currentRole.equals("Casher")) {
                         forwardPage = WebAdresses.CASHER_START_PAGE;
                     } else if (currentRole.equals("CommodityExpert")) {
-                        forwardPage = WebAdresses.EXPER_START_PAGE;
+                        forwardPage = "/ttt";
+                        //forwardPage = WebAdresses.EXPER_START_PAGE;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                req.setAttribute("user", user);
+                req.getSession().setAttribute("user", user);
                 requestDispatcher = req.getRequestDispatcher(forwardPage);
                 requestDispatcher.forward(req, resp);
             }
-            req.setAttribute("not found user", "User with such login and password not found");
-            requestDispatcher = req.getRequestDispatcher(WebAdresses.HOME_PAGE);
-            requestDispatcher.forward(req, resp);
         }
-
-
+        req.setAttribute("not found user", "User with such login and password not found");
+        requestDispatcher = req.getRequestDispatcher(WebAdresses.HOME_PAGE);
+        requestDispatcher.forward(req, resp);
     }
 }
