@@ -6,6 +6,7 @@
 <html>
 <head>
     <title>Comodity expert start page</title>
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
 </head>
 <body>
 <body>
@@ -20,7 +21,10 @@
 <p>Today is <b><%=LocalDate.now()%>
 </b></p>
 
+<a href="/goodsAdd" id="button">Add new position</a>
+
 <h2>List of Goods</h2>
+
 <table border="2">
     <tr>
         <th>No.</th>

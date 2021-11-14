@@ -16,6 +16,8 @@ public class GoodsRepository {
     private static final String SELECT_ALL_GOODS = "SELECT * FROM goods;";
     private static final String UPDATE_GOODS = "UPDATE goods SET name = ?, amount = ?, price = ? WHERE id = ?;";
     private static final String DELETE_GOODS = "DELETE FROM goods WHERE id = ?";
+    private static final String ADD_GOODS = "INSERT INTO goods SET name = ?, amount = ?, price = ?";
+
     private static GoodsRepository goodsRepository = null;
 
     public synchronized static GoodsRepository getGoodsRepository() {
@@ -85,13 +87,35 @@ public class GoodsRepository {
         Goods goods = goodsList.get(idGoods);
         if (goods != null) {
 
-                Connection connection = DbManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(DELETE_GOODS);
-                preparedStatement.setInt(1, idGoods);
-                preparedStatement.executeUpdate();
-                System.out.println("000000000000");
-                return true;
+            Connection connection = DbManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_GOODS);
+            preparedStatement.setInt(1, idGoods);
+            preparedStatement.executeUpdate();
+            System.out.println("000000000000");
+            return true;
+        }
+        return false;
+    }
 
+    public boolean addGoods(Goods goods) {
+        if (goods != null) {
+            List<Goods> goodsList = getAllGoods();
+            boolean status = goodsList.stream().anyMatch(x -> x.getName().equals(goods.getName()));
+            if (!status) {
+                try {
+                    Connection connection = DbManager.getConnection();
+                    PreparedStatement preparedStatement = null;
+                    preparedStatement = connection.prepareStatement(ADD_GOODS);
+                    preparedStatement.setString(1, goods.getName());
+                    preparedStatement.setInt(2, goods.getAmount());
+                    preparedStatement.setDouble(3, goods.getPrice());
+                    preparedStatement.executeUpdate();
+                    System.out.println("000000000000");
+                    return true;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return false;
     }

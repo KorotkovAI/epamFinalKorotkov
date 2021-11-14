@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/ttt")
+@WebServlet("/expertStart")
 public class ExpertStartServlet extends HttpServlet {
     private GoodsRepository goodsRepository;
 

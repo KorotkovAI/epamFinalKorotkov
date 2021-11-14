@@ -51,7 +51,7 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
             boolean updateComplite = goodsRepository.update(newGoods);
             if (updateComplite) {
                 //TODO I need to remove get parameter when Update my goods
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/ttt");
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
                 requestDispatcher.forward(req, resp);
             }
         } catch (GoodsNotFoundException e) {

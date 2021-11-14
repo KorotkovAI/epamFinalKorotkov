@@ -54,8 +54,7 @@ public class HomeServlet extends HttpServlet {
                     } else if (currentRole.equals("Casher")) {
                         forwardPage = WebAdresses.CASHER_START_PAGE;
                     } else if (currentRole.equals("CommodityExpert")) {
-                        forwardPage = "/ttt";
-                        //forwardPage = WebAdresses.EXPER_START_PAGE;
+                        forwardPage = "/expertStart";
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
