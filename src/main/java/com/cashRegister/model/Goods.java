@@ -37,10 +37,6 @@ public class Goods {
         return price;
     }
 
-    public static int getCounter() {
-        return counter;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -53,7 +49,4 @@ public class Goods {
         this.price = price;
     }
 
-    public static void setCounter(int counter) {
-        Goods.counter = counter;
-    }
 }

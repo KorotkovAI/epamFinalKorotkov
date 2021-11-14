@@ -27,20 +27,6 @@ public class UserRepository {
         roleRepository = RoleRepository.getRoleRepository();
     }
 
-    /*
-    Connection getConnection() {
-        Connection con = null;
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        return con;
-    }
-
- */
-
     public void addUser(User user) {
         try (Connection con = ConnectionPool.getInstance().getConnection()) {
             //PreparedStatement preparedStatement = con.prepareStatement();

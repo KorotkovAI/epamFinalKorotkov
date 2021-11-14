@@ -3,8 +3,6 @@ package com.cashRegister.controller;
 import com.cashRegister.WebAdresses;
 import com.cashRegister.model.Goods;
 import com.cashRegister.repository.GoodsRepository;
-import com.cashRegister.repository.RoleRepository;
-import com.cashRegister.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,20 +27,14 @@ public class ExpertStartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //System.out.println("777777");
-        //RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPER_START_PAGE);
-        //requestDispatcher.forward(req, resp);
+        System.out.println("777777");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("888888888");
         List<Goods> goodsList = goodsRepository.getAllGoods();
-        for (Goods goods: goodsRepository.getAllGoods()) {
-            System.out.println(goods.getName());
-        }
         req.getSession().setAttribute("goodsList", goodsList);
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPER_START_PAGE);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_START_PAGE);
         requestDispatcher.forward(req, resp);
     }
 }

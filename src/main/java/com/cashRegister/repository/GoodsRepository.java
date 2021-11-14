@@ -1,5 +1,7 @@
 package com.cashRegister.repository;
 
+import com.cashRegister.exception.GoodsNotFoundException;
+import com.cashRegister.exception.RoleNotFoundException;
 import com.cashRegister.model.Goods;
 import com.cashRegister.model.Role;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 public class GoodsRepository {
     private static final String SELECT_ALL_GOODS = "SELECT * FROM goods;";
+    private static final String UPDATE_GOODS = "UPDATE goods SET name = ?, amount = ?, price = ? WHERE id = ?;";
 
     private static GoodsRepository goodsRepository = null;
 
@@ -33,7 +36,7 @@ public class GoodsRepository {
                 String goodsName = rs.getString("name");
                 int goodsAmount = rs.getInt("amount");
                 double goodsPrice = rs.getDouble("price");
-                goods.add(new Goods(goodsId,goodsName, goodsAmount, goodsPrice));
+                goods.add(new Goods(goodsId, goodsName, goodsAmount, goodsPrice));
             }
         } catch (SQLException e2) {
             e2.printStackTrace();
@@ -41,4 +44,39 @@ public class GoodsRepository {
         return goods;
     }
 
+    public Goods getGoodsById(int id) throws GoodsNotFoundException {
+        List<Goods> goodsList = getAllGoods();
+        for (Goods goods : goodsList) {
+            if (goods.getId() == id) {
+                return goods;
+            }
+        }
+        throw new GoodsNotFoundException("goods with ID " + id + " not found");
+    }
+
+    public boolean update(Goods newGoods) throws GoodsNotFoundException {
+        List<Goods> goodsList = getAllGoods();
+        Goods oldGoods = goodsList.get(newGoods.getId());
+
+        if (oldGoods != null) {
+            if (oldGoods.equals(newGoods)) {
+                return false;
+            } else {
+                try {
+                    Connection connection = DbManager.getConnection();
+                    PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_GOODS);
+                    preparedStatement.setString(1, newGoods.getName());
+                    preparedStatement.setInt(2, newGoods.getAmount());
+                    preparedStatement.setDouble(3, newGoods.getPrice());
+                    preparedStatement.setInt(4, newGoods.getId());
+                    preparedStatement.executeUpdate();
+                    return true;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
+    }
 }

@@ -22,7 +22,7 @@ public class RoleRepository {
         return roleRepository;
     }
 
-    public Role getRoleByName(String name) throws Exception {
+    public Role getRoleByName(String name) throws RoleNotFoundException {
         List<Role> roles = getAllRoles();
         for (Role role : roles) {
             if (role.getName().equals(name)) {

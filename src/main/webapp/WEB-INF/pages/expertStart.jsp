@@ -21,7 +21,7 @@
 </b></p>
 
 <h2>List of Goods</h2>
-<table>
+<table border="2">
     <tr>
         <th>No.</th>
         <th>Name</th>
@@ -42,7 +42,7 @@
         <td><%=goods.getPrice()%>
         </td>
         <td>
-            <a href="/update-goods?id=<%=goods.getId()%>">Update</a>
+            <a href="/goodsUpdate?id=<%=goods.getId()%>">Update</a>
         </td>
         <td>
             <a href="/delete-goods?id=<%=goods.getId()%>">Delete</a>

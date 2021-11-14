@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <td><label for="password">Password: </label></td>
-            <td><input type="text" id="password" name="password" autofocus></td>
+            <td><input type="password" id="password" name="password" autofocus></td>
         </tr>
 
         <tr>
