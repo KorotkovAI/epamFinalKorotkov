@@ -45,7 +45,7 @@
             <a href="/goodsUpdate?id=<%=goods.getId()%>">Update</a>
         </td>
         <td>
-            <a href="/delete-goods?id=<%=goods.getId()%>">Delete</a>
+            <a href="/deleteGoods?id=<%=goods.getId()%>">Delete</a>
         </td>
     </tr>
     <%

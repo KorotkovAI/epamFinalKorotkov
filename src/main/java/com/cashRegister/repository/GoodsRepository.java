@@ -15,7 +15,7 @@ import java.util.List;
 public class GoodsRepository {
     private static final String SELECT_ALL_GOODS = "SELECT * FROM goods;";
     private static final String UPDATE_GOODS = "UPDATE goods SET name = ?, amount = ?, price = ? WHERE id = ?;";
-
+    private static final String DELETE_GOODS = "DELETE FROM goods WHERE id = ?";
     private static GoodsRepository goodsRepository = null;
 
     public synchronized static GoodsRepository getGoodsRepository() {
@@ -77,6 +77,22 @@ public class GoodsRepository {
             }
         }
 
+        return false;
+    }
+
+    public boolean deleteById(int idGoods) throws SQLException {
+        List<Goods> goodsList = getAllGoods();
+        Goods goods = goodsList.get(idGoods);
+        if (goods != null) {
+
+                Connection connection = DbManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(DELETE_GOODS);
+                preparedStatement.setInt(1, idGoods);
+                preparedStatement.executeUpdate();
+                System.out.println("000000000000");
+                return true;
+
+        }
         return false;
     }
 }
