@@ -4,10 +4,7 @@ public class Shift {
     private int id;
     private boolean isOpen;
 
-    private static int counter = 1;
-
     public Shift() {
-        this.id = counter++;
         this.isOpen = true;
     }
 

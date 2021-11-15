@@ -5,10 +5,7 @@ public class Role {
     private int id;
     private String name;
 
-    private static int counter = 1;
-
     public Role(String name) {
-        this.id = counter++;
         this.name = name;
     }
 

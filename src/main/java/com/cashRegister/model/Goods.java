@@ -6,8 +6,6 @@ public class Goods {
     private int amount;
     private double price;
 
-    private static int counter = 1;
-
     public Goods(int id, String name, int amount, double price) {
         this.id = id;
         this.name = name;

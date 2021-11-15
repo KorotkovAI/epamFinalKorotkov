@@ -8,14 +8,7 @@ public class User {
     private String surname;
     private Role roleName;
 
-    private static int counter = 1;
-
-    public User() {
-        this.id = counter++;
-    }
-
     public User(String login, String password, String name, String surname, Role roleName) {
-        this.id = counter++;
         this.login = login;
         this.password = password;
         this.name = name;
