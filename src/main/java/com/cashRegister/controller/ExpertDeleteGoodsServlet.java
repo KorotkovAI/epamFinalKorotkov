@@ -1,6 +1,7 @@
 package com.cashRegister.controller;
 
-import com.cashRegister.WebAdresses;
+import com.cashRegister.exception.GoodsNotFoundException;
+import com.cashRegister.model.Goods;
 import com.cashRegister.repository.GoodsRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/deleteGoods")
 public class ExpertDeleteGoodsServlet extends HttpServlet {
@@ -27,20 +29,20 @@ public class ExpertDeleteGoodsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("-----------");
         try {
-            int goodsId = Integer.parseInt(req.getParameter("id"));
-            System.out.println(goodsId);
-            boolean isDeletedGoods = goodsRepository.deleteById(goodsId);;
+            String currentGoodsName = req.getParameter("goods");
+            boolean isDeletedGoods = goodsRepository.deleteByName(currentGoodsName);
+            req.getSession().removeAttribute("goodsList");
+            List<Goods> goodsList = goodsRepository.getAllGoods();
+            req.getSession().setAttribute("goodsList", goodsList);
+
             System.out.println(isDeletedGoods);
             if (isDeletedGoods) {
-                System.out.println("hhhhhhhhhhh");
-                //TODO cant refresh list of goods after deleting
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/ttt");
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
                 requestDispatcher.forward(req, resp);
             } else {
                 System.out.println("I cant see this");
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/ttt");
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
                 requestDispatcher.forward(req, resp);
                 System.out.println("too match");
             }

@@ -28,7 +28,7 @@ public class UserRepository {
     }
 
     public void addUser(User user) {
-        try (Connection con = ConnectionPool.getInstance().getConnection()) {
+        try (Connection con = DbManager.getConnection()) {
             //PreparedStatement preparedStatement = con.prepareStatement();
         } catch (SQLException e1) {
             e1.printStackTrace();

@@ -1,8 +1,5 @@
-<%@ page import="com.cashRegister.model.User" %>
-<%@ page import="java.time.LocalDate" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.cashRegister.model.Goods" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Comodity expert start page</title>
@@ -11,14 +8,10 @@
 <body>
 <body>
 <h2>Comodity expert start page</h2>
-<%
-    User user = (User) request.getSession().getAttribute("user");
-    List<Goods> goodsList = (List<Goods>) request.getSession().getAttribute("goodsList");
-%>
 
-<p>Hello <b><%=user.getName()%> <%=user.getSurname()%>
+<p>Hello <b><c:out value = "${user.getName()} " /> <c:out value = "${user.getSurname()}" />
 </b></p>
-<p>Today is <b><%=LocalDate.now()%>
+<p>Today is <b> <c:out value = "${localDate}" />
 </b></p>
 
 <a href="/goodsAdd" id="button">Add new position</a>
@@ -34,27 +27,24 @@
         <th colspan="2">Operation</th>
 
     </tr>
-    <%
-        for (Goods goods : goodsList) { %>
-    <tr>
-        <td><%=goods.getId()%>
-        </td>
-        <td><%=goods.getName()%>
-        </td>
-        <td><%=goods.getAmount()%>
-        </td>
-        <td><%=goods.getPrice()%>
-        </td>
-        <td>
-            <a href="/goodsUpdate?id=<%=goods.getId()%>">Update</a>
-        </td>
-        <td>
-            <a href="/deleteGoods?id=<%=goods.getId()%>">Delete</a>
-        </td>
-    </tr>
-    <%
-        }
-    %>
+    <c:forEach items="${goodsList}" var="goods">
+        <tr>
+            <td>${goods.getId()}
+            </td>
+            <td>${goods.getName()}
+            </td>
+            <td>${goods.getAmount()}
+            </td>
+            <td>${goods.getPrice()}
+            </td>
+            <td>
+                <a href="/goodsUpdate?id=${goods.getId()}">Update</a>
+            </td>
+            <td>
+                <a href="/deleteGoods?goods=${goods.getName()}">Delete</a>
+            </td>
+        </tr>
+    </c:forEach>
 </table>
 
 </body>

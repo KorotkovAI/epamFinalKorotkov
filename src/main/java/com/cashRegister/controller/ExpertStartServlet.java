@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet("/expertStart")
@@ -36,6 +37,8 @@ public class ExpertStartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Goods> goodsList = goodsRepository.getAllGoods();
+        LocalDate localDate = LocalDate.now();
+        req.getSession().setAttribute("localDate", localDate);
         req.getSession().setAttribute("goodsList", goodsList);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_START_PAGE);
         requestDispatcher.forward(req, resp);

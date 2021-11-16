@@ -1,9 +1,7 @@
 package com.cashRegister.repository;
 
 import com.cashRegister.exception.GoodsNotFoundException;
-import com.cashRegister.exception.RoleNotFoundException;
 import com.cashRegister.model.Goods;
-import com.cashRegister.model.Role;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,8 +13,8 @@ import java.util.List;
 public class GoodsRepository {
     private static final String SELECT_ALL_GOODS = "SELECT * FROM goods;";
     private static final String UPDATE_GOODS = "UPDATE goods SET name = ?, amount = ?, price = ? WHERE id = ?;";
-    private static final String DELETE_GOODS = "DELETE FROM goods WHERE id = ?";
-    private static final String ADD_GOODS = "INSERT INTO goods SET name = ?, amount = ?, price = ?";
+    private static final String DELETE_GOODS = "DELETE FROM goods WHERE id = ?;";
+    private static final String ADD_GOODS = "INSERT INTO goods SET name = ?, amount = ?, price = ?;";
 
     private static GoodsRepository goodsRepository = null;
 
@@ -82,16 +80,15 @@ public class GoodsRepository {
         return false;
     }
 
-    public boolean deleteById(int idGoods) throws SQLException {
-        List<Goods> goodsList = getAllGoods();
-        Goods goods = goodsList.get(idGoods);
-        if (goods != null) {
-
+    public boolean deleteByName(String goodsName) throws SQLException {
+        List<Goods> goodsList = goodsRepository.getAllGoods();
+        Goods goods = goodsList.stream().filter(x -> x.getName().equals(goodsName)).findFirst().get();
+        int newParam = goods.getId();
+        if (newParam != -1) {
             Connection connection = DbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_GOODS);
-            preparedStatement.setInt(1, idGoods);
+            preparedStatement.setInt(1, newParam);
             preparedStatement.executeUpdate();
-            System.out.println("000000000000");
             return true;
         }
         return false;

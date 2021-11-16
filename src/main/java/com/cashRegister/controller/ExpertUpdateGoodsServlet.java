@@ -32,32 +32,53 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
         try {
             int goodsId = Integer.parseInt(req.getParameter("id"));
             goods = GoodsRepository.getGoodsRepository().getGoodsById(goodsId);
+            System.out.println(goodsId);
+            System.out.println(goods.getName());
         } catch (GoodsNotFoundException e) {
             e.printStackTrace();
         }
-        req.getSession().setAttribute("goods", goods);
+        req.getSession().setAttribute("goodsForUpdate", goods);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
         requestDispatcher.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int newGoodsId = Integer.parseInt(req.getParameter("idGoods"));
-        String newGoodsName = req.getParameter("nameGoods");
-        int newGoodsAmount = Integer.parseInt(req.getParameter("amountGoods"));
-        double newGoodsPrice = Double.parseDouble(req.getParameter("priceGoods"));
+        int newGoodsId = 0;
+        String newGoodsName = null;
+        int newGoodsAmount = -1;
+        double newGoodsPrice = -1.0;
+
+        try {
+            newGoodsId = Integer.parseInt(req.getParameter("idGoods"));
+            newGoodsName = req.getParameter("nameGoods");
+            newGoodsAmount = Integer.parseInt(req.getParameter("amountGoods"));
+            newGoodsPrice = Double.parseDouble(req.getParameter("priceGoods"));
+        } catch (NumberFormatException e) {
+            req.getSession().setAttribute("wrongMining", "Sorry you use not correct value");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
+            requestDispatcher.forward(req, resp);
+        }
+
+        if (newGoodsId < 1 || newGoodsName == null || newGoodsName.isEmpty() || newGoodsAmount < 0 || newGoodsPrice < 0.0) {
+            req.getSession().setAttribute("wrongMining", "Sorry you use not correct value");
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
+            requestDispatcher.forward(req, resp);
+        }
+
         Goods newGoods = new Goods(newGoodsId, newGoodsName, newGoodsAmount, newGoodsPrice);
+
         try {
             boolean updateComplite = goodsRepository.update(newGoods);
             if (updateComplite) {
-                //TODO I need to remove get parameter when Update my goods
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
                 requestDispatcher.forward(req, resp);
             }
         } catch (GoodsNotFoundException e) {
             System.out.println("exception goods");
         }
-        req.setAttribute("not found goods", "Sorry something wrong with goods");
+
+        req.getSession().setAttribute("notFoundGoods", "Sorry something wrong with goods");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
         requestDispatcher.forward(req, resp);
     }
