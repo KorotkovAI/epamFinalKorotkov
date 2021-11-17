@@ -61,20 +61,21 @@ public class GoodsRepository {
         if (oldGoods != null) {
             if (oldGoods.equals(newGoods)) {
                 return false;
-            } else {
-                try {
-                    Connection connection = DbManager.getConnection();
-                    PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_GOODS);
-                    preparedStatement.setString(1, newGoods.getName());
-                    preparedStatement.setInt(2, newGoods.getAmount());
-                    preparedStatement.setDouble(3, newGoods.getPrice());
-                    preparedStatement.setInt(4, newGoods.getId());
-                    preparedStatement.executeUpdate();
-                    return true;
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
             }
+
+            try {
+                Connection connection = DbManager.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_GOODS);
+                preparedStatement.setString(1, newGoods.getName());
+                preparedStatement.setInt(2, newGoods.getAmount());
+                preparedStatement.setDouble(3, newGoods.getPrice());
+                preparedStatement.setInt(4, newGoods.getId());
+                preparedStatement.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
 
         return false;

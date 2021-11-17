@@ -44,7 +44,6 @@ public class HomeServlet extends HttpServlet {
         String currentRole;
         String forwardPage = WebAdresses.ERROR_PAGE;
         RequestDispatcher requestDispatcher;
-
         for (User user : userRepository.getAllUsers()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 currentRole = user.getRoleName().getName();

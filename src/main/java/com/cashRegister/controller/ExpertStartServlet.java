@@ -28,9 +28,7 @@ public class ExpertStartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("777777");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_START_PAGE);
-        req.setAttribute("trt", "ttttrrr");
         requestDispatcher.forward(req, resp);
     }
 

@@ -1,7 +1,6 @@
 package com.cashRegister.model;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public class Check {
     private int id;

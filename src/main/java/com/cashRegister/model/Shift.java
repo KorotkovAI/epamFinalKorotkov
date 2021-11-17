@@ -14,4 +14,34 @@ public class Shift {
         this.isOpen = true;
     }
 
+    public Shift(int id, boolean isOpen, Timestamp openTime, Timestamp closeTime) {
+        this.id = id;
+        this.isOpen = isOpen;
+        this.openTime = openTime;
+        this.closeTime = closeTime;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public Timestamp getOpenTime() {
+        return openTime;
+    }
+
+    public Timestamp getCloseTime() {
+        return closeTime;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
+
+    public void setCloseTime(Timestamp closeTime) {
+        this.closeTime = closeTime;
+    }
 }
