@@ -7,12 +7,37 @@
 <body>
 <h2>Casher Start Page</h2>
 
-<p>Hello <b><c:out value = "${user.getName()} " /> <c:out value = "${user.getSurname()}" />
+<p>Hello <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>
 </b></p>
-<p>Today is <b> <c:out value = "${localDate}" />
+<p>Today is <b> <c:out value="${localDate}"/>
 </b></p>
-<p>Open shift is <b> <c:out value = "${openshift.id}" />
+<p>Open shift is № <b> <c:out value="${openshift.id}"/>
 </b></p>
+<a href="/checkAdd" id="button">Create new check</a>
 
+<h2>List of Checks today</h2>
+
+<table border="2">
+    <tr>
+        <th>No.</th>
+        <th>CheckTime</th>
+        <th>CheckSum</th>
+        <th>Operation</th>
+
+    </tr>
+    <c:forEach items="${checksOfCasher}" var="check">
+        <tr>
+            <td>${check.id}
+            </td>
+            <td>${check.timestamp}
+            </td>
+            <td>${check.sum}
+            </td>
+            <td>
+                <a href="/returnCheck?id=${check.id}">Return</a>
+            </td>
+        </tr>
+    </c:forEach>
+</table>
 </body>
 </html>

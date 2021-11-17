@@ -2,7 +2,10 @@ package com.cashRegister.controller;
 
 import com.cashRegister.WebAdresses;
 import com.cashRegister.exception.ShiftNotFoundException;
+import com.cashRegister.model.Check;
 import com.cashRegister.model.Shift;
+import com.cashRegister.model.User;
+import com.cashRegister.repository.CheckRepository;
 import com.cashRegister.repository.ShiftRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,11 +24,13 @@ import java.util.List;
 public class CasherStartServlet extends HttpServlet {
 
     private ShiftRepository shiftRepository;
+    private CheckRepository checkRepository;
 
     private static final Logger log = LogManager.getLogger(CasherStartServlet.class);
 
     public CasherStartServlet() {
         this.shiftRepository = ShiftRepository.getShiftRepository();
+        this.checkRepository = CheckRepository.getCheckRepository();
     }
 
     @Override
@@ -38,6 +43,11 @@ public class CasherStartServlet extends HttpServlet {
         Shift openShift = ShiftRepository.getShiftRepository().firstOpenShift();
         req.getSession().setAttribute("openshift", openShift);
         req.getSession().setAttribute("localDate", localDate);
+
+        User user = (User)req.getSession().getAttribute("user");
+        List<Check> checkList = checkRepository.getAllChecksCurrentCasherOpenShift(user);
+        req.getSession().setAttribute("checksOfCasher", checkList);
+
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_START_FORWARD);
         requestDispatcher.forward(req, resp);
     }

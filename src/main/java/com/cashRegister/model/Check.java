@@ -8,21 +8,24 @@ public class Check {
     private Timestamp timestamp;
     private boolean isReturned;
     private Shift shiftId;
+    private User userId;
 
 
-    public Check(int id, double sum, Timestamp timestamp, boolean isReturned, Shift shiftId) {
+    public Check(int id, double sum, Timestamp timestamp, boolean isReturned, Shift shiftId, User user) {
         this.id = id;
         this.sum = sum;
         this.timestamp = timestamp;
         this.isReturned = isReturned;
         this.shiftId = shiftId;
+        this.userId = user;
     }
 
-    public Check(double sum, Timestamp timestamp, boolean isReturned, Shift shiftId) {
+    public Check(double sum, Timestamp timestamp, boolean isReturned, Shift shiftId, User user) {
         this.sum = sum;
         this.timestamp = timestamp;
         this.isReturned = isReturned;
         this.shiftId = shiftId;
+        this.userId = user;
     }
 
     public int getId() {
@@ -59,5 +62,13 @@ public class Check {
 
     public void setShiftId(Shift shiftId) {
         this.shiftId = shiftId;
+    }
+
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
     }
 }
