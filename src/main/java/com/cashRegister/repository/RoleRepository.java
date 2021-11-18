@@ -1,5 +1,6 @@
 package com.cashRegister.repository;
 
+import com.cashRegister.DbManager;
 import com.cashRegister.exception.RoleNotFoundException;
 import com.cashRegister.model.Role;
 

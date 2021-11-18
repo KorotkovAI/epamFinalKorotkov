@@ -1,7 +1,6 @@
 package com.cashRegister.controller;
 
 import com.cashRegister.WebAdresses;
-import com.cashRegister.exception.ShiftNotFoundException;
 import com.cashRegister.model.Check;
 import com.cashRegister.model.Shift;
 import com.cashRegister.model.User;

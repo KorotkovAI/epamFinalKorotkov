@@ -34,7 +34,9 @@ public class ExpertStartServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Goods> goodsList = goodsRepository.getAllGoods();
+        req.getSession().removeAttribute("goodsList");
+        List<Goods> goodsList = null;
+        goodsList = goodsRepository.getAllGoods();
         LocalDate localDate = LocalDate.now();
         req.getSession().setAttribute("localDate", localDate);
         req.getSession().setAttribute("goodsList", goodsList);

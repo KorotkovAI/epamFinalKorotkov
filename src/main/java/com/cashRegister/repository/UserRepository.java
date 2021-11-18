@@ -1,6 +1,6 @@
 package com.cashRegister.repository;
 
-import com.cashRegister.controller.HomeServlet;
+import com.cashRegister.DbManager;
 import com.cashRegister.model.Role;
 import com.cashRegister.model.User;
 

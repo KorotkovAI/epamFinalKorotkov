@@ -1,12 +1,10 @@
 package com.cashRegister.repository;
 
-import com.cashRegister.exception.GoodsNotFoundException;
+import com.cashRegister.DbManager;
 import com.cashRegister.exception.ShiftNotFoundException;
-import com.cashRegister.model.Goods;
 import com.cashRegister.model.Shift;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -34,6 +34,10 @@
             </td>
         </tr>
     </c:forEach>
+    <tr>
+        <th colspan="4">Total price</th>
+        <th>${totalPrice}</th>
+    </tr>
 </table>
 <tr>
     <td><input type="submit" value="Create"></td>

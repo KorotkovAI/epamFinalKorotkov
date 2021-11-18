@@ -1,5 +1,6 @@
 package com.cashRegister.repository;
 
+import com.cashRegister.DbManager;
 import com.cashRegister.model.Check;
 import com.cashRegister.model.Shift;
 import com.cashRegister.model.User;

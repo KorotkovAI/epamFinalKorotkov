@@ -1,5 +1,6 @@
 package com.cashRegister.repository;
 
+import com.cashRegister.DbManager;
 import com.cashRegister.exception.GoodsNotFoundException;
 import com.cashRegister.model.Goods;
 
@@ -118,7 +119,6 @@ public class GoodsRepository {
                     preparedStatement.setInt(2, goods.getAmount());
                     preparedStatement.setDouble(3, goods.getPrice());
                     preparedStatement.executeUpdate();
-                    System.out.println("000000000000");
                     return true;
                 } catch (SQLException e) {
                     e.printStackTrace();
