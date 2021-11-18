@@ -54,6 +54,16 @@ public class GoodsRepository {
         throw new GoodsNotFoundException("goods with ID " + id + " not found");
     }
 
+    public Goods getGoodsByName(String name) throws GoodsNotFoundException {
+        List<Goods> goodsList = getAllGoods();
+        for (Goods goods : goodsList) {
+            if (goods.getName().equals(name)) {
+                return goods;
+            }
+        }
+        throw new GoodsNotFoundException("goods with name " + name + " not found");
+    }
+
     public boolean update(Goods newGoods) throws GoodsNotFoundException {
         List<Goods> goodsList = getAllGoods();
         Goods oldGoods = goodsList.get(newGoods.getId());

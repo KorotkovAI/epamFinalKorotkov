@@ -27,7 +27,6 @@ public class ExpertAddGoodsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("get method");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_ADD);
         requestDispatcher.forward(req, resp);
     }

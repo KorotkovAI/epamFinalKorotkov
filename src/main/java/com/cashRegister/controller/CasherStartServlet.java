@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet("/cashertStart")
+@WebServlet(WebAdresses.CASHER_START_PAGE)
 public class CasherStartServlet extends HttpServlet {
 
     private ShiftRepository shiftRepository;
@@ -35,6 +35,7 @@ public class CasherStartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("come to do get");
     }
 
     @Override
