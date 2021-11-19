@@ -2,6 +2,9 @@ package com.cashRegister.controller;
 
 import com.cashRegister.WebAdresses;
 import com.cashRegister.model.Goods;
+import com.cashRegister.model.Shift;
+import com.cashRegister.model.User;
+import com.cashRegister.repository.CheckRepository;
 import com.cashRegister.repository.GoodsRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,31 +21,34 @@ import java.util.List;
 public class CasherCreateCheckServlet extends HttpServlet {
 
     private GoodsRepository goodsRepository;
+    private CheckRepository checkRepository;
 
     private static final Logger log = LogManager.getLogger(CasherCreateCheckServlet.class);
 
     public CasherCreateCheckServlet() {
         this.goodsRepository = GoodsRepository.getGoodsRepository();
+        this.checkRepository = CheckRepository.getCheckRepository();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("bbbbbbbbbbb");
+        boolean statusCreateCheck = false;
         List<Goods> goodsCheck = (List<Goods>) req.getSession().getAttribute("goodsForCheck");
         if (goodsCheck != null) {
-            goodsCheck.stream().map(x -> x.getName()).forEach(System.out::print);
-            System.out.println("----------");
             boolean status = goodsRepository.deleteGoodsForCheck(goodsCheck);
-            System.out.println(status + " super");
-            req.getSession().removeAttribute("goodsForCheck");
-            System.out.println("delete from check");
-            List<Goods> newFFFF = (List<Goods>) req.getSession().getAttribute("goodsForCheck");
-            System.out.println("cant see next");
-            if (newFFFF != null) {
-                newFFFF.stream().map(x -> x.getName()).forEach(System.out::print);
+            if (status) {
+                Shift currentShift = (Shift) req.getSession().getAttribute("openshift");
+                User currentUser = (User) req.getSession().getAttribute("user");
+                statusCreateCheck = checkRepository.createCheck(goodsCheck, currentShift, currentUser);
+                req.getSession().removeAttribute("goodsForCheck");
+            } else {
+                resp.sendRedirect(WebAdresses.ERROR_PAGE);
+            }
+
+            if (statusCreateCheck) {
+
             }
         }
-        resp.sendRedirect(WebAdresses.ERROR_PAGE);
     }
 
     @Override

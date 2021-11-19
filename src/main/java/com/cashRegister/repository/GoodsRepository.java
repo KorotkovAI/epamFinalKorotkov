@@ -132,18 +132,13 @@ public class GoodsRepository {
             List<Goods> oldGoods = getAllGoods();
             for (Goods goods : goodsList) {
                 if (goods.getId() > 0 || goods.getAmount() > 0) {
-                    System.out.println("1");
                     int oldAmount = oldGoods.stream().filter(x -> x.getName().equals(goods.getName())).findFirst().get().getAmount();
-                    System.out.println(oldAmount + " oldamount");
                     int newGoodsAmount = oldAmount - goods.getAmount();
                     if (newGoodsAmount < 0) {
                         statement.cancel();
-                        System.out.println("not good");
                         return false;
                     }
-                    System.out.println("2");
                     String currentBatch = String.format(DELETE_FROM_STORE, newGoodsAmount, goods.getId());
-                    System.out.println(currentBatch);
                     statement.addBatch(currentBatch);
                 } else {
                     statement.cancel();
@@ -161,17 +156,15 @@ public class GoodsRepository {
                         findFirst().get().getAmount();
                 if (amountfromList < 0) {
                     checkIsMinus = true;
-                    System.out.println("goods less then 0");
                     break;
                 }
             }
-System.out.println(checkIsMinus + "checkisMinus");
+
             if (checkIsMinus) {
                 Statement stmtRollBack = connection.createStatement();
                 for (Goods goodsForRollback : goodsList) {
                     String rollbackBatch = String.format(DELETE_FROM_STORE,
                             oldGoods.get(goodsForRollback.getId()).getAmount(), goodsForRollback.getId());
-                    System.out.println(rollbackBatch);
                     stmtRollBack.addBatch(rollbackBatch);
                 }
                 stmtRollBack.executeBatch();
