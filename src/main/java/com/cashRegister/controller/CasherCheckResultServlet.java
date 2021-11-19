@@ -17,20 +17,8 @@ public class CasherCheckResultServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("sssssssssss");
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_RESULT);
         requestDispatcher.forward(req, resp);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-
-        System.out.println("pppppppppp");
-        List<Goods> checkGoods = (List<Goods>) req.getSession().getAttribute("goodsForCheck");
-
-        for (Goods goods: checkGoods) {
-            System.out.println(goods.getName() + " " + goods.getAmount());
-        }
-    }
 }

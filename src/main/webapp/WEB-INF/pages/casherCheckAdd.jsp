@@ -13,7 +13,8 @@
 %>
 <p><h4><%=mes != null ? mes : ""%>
 </h4> </p>
-<a href="/casherStart">Back to list</a>
+<a href="/casherStart"><input type="button" value="Back to list"></a>
+
 <form action="" method="post">
 
     <p><h4>${mes}</h4> </p>

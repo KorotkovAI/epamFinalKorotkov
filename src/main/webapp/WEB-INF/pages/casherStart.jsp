@@ -13,7 +13,7 @@
 </b></p>
 <p>Open shift is № <b> <c:out value="${openshift.id}"/>
 </b></p>
-<a href="/checkAdd" id="button">Create new check</a>
+<a href="/checkAdd"><input type="button" value="Create new check"></a>
 
 <h2>List of Checks today</h2>
 

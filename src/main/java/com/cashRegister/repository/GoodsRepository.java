@@ -4,10 +4,7 @@ import com.cashRegister.DbManager;
 import com.cashRegister.exception.GoodsNotFoundException;
 import com.cashRegister.model.Goods;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +13,7 @@ public class GoodsRepository {
     private static final String UPDATE_GOODS = "UPDATE goods SET name = ?, amount = ?, price = ? WHERE id = ?;";
     private static final String DELETE_GOODS = "DELETE FROM goods WHERE id = ?;";
     private static final String ADD_GOODS = "INSERT INTO goods SET name = ?, amount = ?, price = ?;";
+    private String DELETE_FROM_STORE = "UPDATE goods SET amount = %d WHERE id = %d;";
 
     private static GoodsRepository goodsRepository = null;
 
@@ -113,8 +111,7 @@ public class GoodsRepository {
             if (!status) {
                 try {
                     Connection connection = DbManager.getConnection();
-                    PreparedStatement preparedStatement = null;
-                    preparedStatement = connection.prepareStatement(ADD_GOODS);
+                    PreparedStatement preparedStatement = connection.prepareStatement(ADD_GOODS);
                     preparedStatement.setString(1, goods.getName());
                     preparedStatement.setInt(2, goods.getAmount());
                     preparedStatement.setDouble(3, goods.getPrice());
@@ -126,5 +123,64 @@ public class GoodsRepository {
             }
         }
         return false;
+    }
+
+    public boolean deleteGoodsForCheck(List<Goods> goodsList) {
+        try {
+            Connection connection = DbManager.getConnection();
+            Statement statement = connection.createStatement();
+            List<Goods> oldGoods = getAllGoods();
+            for (Goods goods : goodsList) {
+                if (goods.getId() > 0 || goods.getAmount() > 0) {
+                    System.out.println("1");
+                    int oldAmount = oldGoods.stream().filter(x -> x.getName().equals(goods.getName())).findFirst().get().getAmount();
+                    System.out.println(oldAmount + " oldamount");
+                    int newGoodsAmount = oldAmount - goods.getAmount();
+                    if (newGoodsAmount < 0) {
+                        statement.cancel();
+                        System.out.println("not good");
+                        return false;
+                    }
+                    System.out.println("2");
+                    String currentBatch = String.format(DELETE_FROM_STORE, newGoodsAmount, goods.getId());
+                    System.out.println(currentBatch);
+                    statement.addBatch(currentBatch);
+                } else {
+                    statement.cancel();
+                    return false;
+                }
+            }
+
+            statement.executeBatch();
+
+            boolean checkIsMinus = false;
+            List<Goods> goodsUpdatedList = getAllGoods();
+
+            for (Goods goodsFromCheck : goodsList) {
+                int amountfromList = goodsUpdatedList.stream().filter(x -> x.getName().equals(goodsFromCheck.getName())).
+                        findFirst().get().getAmount();
+                if (amountfromList < 0) {
+                    checkIsMinus = true;
+                    System.out.println("goods less then 0");
+                    break;
+                }
+            }
+System.out.println(checkIsMinus + "checkisMinus");
+            if (checkIsMinus) {
+                Statement stmtRollBack = connection.createStatement();
+                for (Goods goodsForRollback : goodsList) {
+                    String rollbackBatch = String.format(DELETE_FROM_STORE,
+                            oldGoods.get(goodsForRollback.getId()).getAmount(), goodsForRollback.getId());
+                    System.out.println(rollbackBatch);
+                    stmtRollBack.addBatch(rollbackBatch);
+                }
+                stmtRollBack.executeBatch();
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 }

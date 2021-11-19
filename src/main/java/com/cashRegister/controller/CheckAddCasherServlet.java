@@ -57,36 +57,48 @@ public class CheckAddCasherServlet extends HttpServlet {
             req.getSession().setAttribute("not availible params", "Can't be empty or zero");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
             requestDispatcher.forward(req, resp);
+        } else {
+            Goods currentGoods = null;
+
+            try {
+                currentGoods = goodsRepository.getGoodsByName(newPosName);
+            } catch (GoodsNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            if (newPosAmount > currentGoods.getAmount()) {
+                req.getSession().setAttribute("not availible params", "There is not enough goods in the store");
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
+                requestDispatcher.forward(req, resp);
+            } else {
+                if (currentGoods != null) {
+                    String name = currentGoods.getName();
+                    if (goodsForCheck.stream().anyMatch(x -> x.getName().equals(name))) {
+                       Goods goodsForUpdate = goodsForCheck.stream().filter(x -> x.getName().equals(name)).findFirst().get();
+                       int newAmount = goodsForUpdate.getAmount() + newPosAmount;
+                        if (newAmount > currentGoods.getAmount()) {
+                            req.getSession().setAttribute("not availible params", "There is not enough goods in the store");
+                            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
+                            requestDispatcher.forward(req, resp);
+                        } else {
+                            goodsForCheck.get(goodsForCheck.indexOf(goodsForUpdate)).setAmount(newAmount);
+                        }
+                    } else {
+                        currentGoods.setAmount(newPosAmount);
+                        goodsForCheck.add(currentGoods);
+                    }
+                }
+
+                double totalPrice = 0.0;
+
+                for (Goods goods : goodsForCheck) {
+                    totalPrice += goods.getPrice() * goods.getAmount();
+                }
+
+                req.getSession().setAttribute("goodsForCheck", goodsForCheck);
+                req.getSession().setAttribute("totalPrice", totalPrice);
+                resp.sendRedirect(WebAdresses.CASHER_CHECK_RESULT_SERVLET);
+            }
         }
-
-        Goods currentGoods = null;
-
-        try {
-            currentGoods = goodsRepository.getGoodsByName(newPosName);
-        } catch (GoodsNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (newPosAmount > currentGoods.getAmount()) {
-            req.getSession().setAttribute("not availible params", "There is not enough goods in the store");
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
-            requestDispatcher.forward(req, resp);
-        }
-
-
-        currentGoods.setAmount(newPosAmount);
-        goodsForCheck.add(currentGoods);
-
-        double totalPrice = 0.0;
-
-        for (Goods goods: goodsForCheck) {
-            totalPrice += goods.getPrice()* goods.getAmount();
-        }
-
-        req.getSession().setAttribute("goodsForCheck", goodsForCheck);
-        req.getSession().setAttribute("totalPrice", totalPrice);
-        resp.sendRedirect(WebAdresses.CASHER_CHECK_RESULT_SERVLET);
-        //RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_RESULT_SERVLET);
-        //requestDispatcher.forward(req, resp);
     }
 }

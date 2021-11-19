@@ -6,7 +6,7 @@
 </head>
 <body>
 <h2>Check Goods</h2>
-<a href="/checkAdd">Add position to check</a>
+<a href="/checkAdd"><input type="button" value="Add to check"></a>
 <table border="2">
     <tr>
         <th>No.</th>
@@ -40,7 +40,7 @@
     </tr>
 </table>
 <tr>
-    <td><input type="submit" value="Create"></td>
+    <td><a href="/createCheck"><input type="button" value="Create"></a></td>
     <td><input type="reset" value="Reset"></td>
 </tr>
 </body>
