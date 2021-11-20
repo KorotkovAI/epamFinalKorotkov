@@ -7,6 +7,14 @@
 <body>
 <h2>Check Goods</h2>
 <a href="/checkAdd"><input type="button" value="Add to check"></a>
+
+<%
+    String mes = (String) request.getSession().getAttribute("not availible params");
+
+%>
+
+<p><h4><%=mes != null ? mes : ""%>
+
 <table border="2">
     <tr>
         <th>No.</th>

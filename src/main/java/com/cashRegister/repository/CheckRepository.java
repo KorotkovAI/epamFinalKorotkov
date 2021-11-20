@@ -44,7 +44,7 @@ public class CheckRepository {
                 while (rs.next()) {
                     int idCheck = rs.getInt("id");
                     double checkSum = rs.getDouble("CheckSum");
-                    Timestamp checkTime = rs.getTimestamp("CheckTme");
+                    Timestamp checkTime = rs.getTimestamp("CheckTime");
                     boolean isReturned = (rs.getInt("isReturned") == 1) ? true : false;
                     checks.add(new Check(idCheck, checkSum, checkTime, isReturned, openshift, user));
                 }
@@ -56,30 +56,34 @@ public class CheckRepository {
         throw new NullPointerException("user cannot be null");
     }
 
-    public boolean createCheck(List<Goods> goodsList, Shift shift, User user) {
+    public int createCheck(List<Goods> goodsList, Shift shift, User user) {
+
+        int primarykey = 0;
+
         if (!goodsList.isEmpty() || goodsList != null || shift != null || user != null) {
             double cheksum =0.0;
+
             for (Goods goods: goodsList) {
                 cheksum += goods.getAmount()*goods.getPrice();
             }
-System.out.println(cheksum + "checksum");
-            System.out.println(shift.getId() + "shift");
-            System.out.println(user.getId() + "user");
+
             try {
-                System.out.println(Timestamp.valueOf(LocalDateTime.now()));
                 Connection connection = DbManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(ADD_CHECK);
+                PreparedStatement preparedStatement = connection.prepareStatement(ADD_CHECK, new String[] { "id" });
                 preparedStatement.setDouble(1, cheksum);
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
                 preparedStatement.setInt(3, shift.getId());
                 preparedStatement.setInt(4, user.getId());
-                int result = preparedStatement.executeUpdate();
-                System.out.println(result + " result");
-                return true;
+                if (preparedStatement.executeUpdate() > 0) {
+                    ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        primarykey = generatedKeys.getInt(1);
+                    }
+                }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         }
-        return false;
+        return primarykey;
     }
 }

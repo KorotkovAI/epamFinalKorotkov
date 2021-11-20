@@ -34,8 +34,8 @@ public class CasherStartServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("come to do get");
-    }
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_START_FORWARD);
+        requestDispatcher.forward(req, resp);    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -45,8 +45,10 @@ public class CasherStartServlet extends HttpServlet {
         req.getSession().setAttribute("localDate", localDate);
 
         User user = (User)req.getSession().getAttribute("user");
-        List<Check> checkList = checkRepository.getAllChecksCurrentCasherOpenShift(user);
-        req.getSession().setAttribute("checksOfCasher", checkList);
+        if (req.getSession().getAttribute("checksOfCasher") == null) {
+            List<Check> checkList = checkRepository.getAllChecksCurrentCasherOpenShift(user);
+            req.getSession().setAttribute("checksOfCasher", checkList);
+        }
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_START_FORWARD);
         requestDispatcher.forward(req, resp);

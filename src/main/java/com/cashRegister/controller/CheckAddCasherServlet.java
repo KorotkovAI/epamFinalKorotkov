@@ -68,7 +68,7 @@ public class CheckAddCasherServlet extends HttpServlet {
 
             if (newPosAmount > currentGoods.getAmount()) {
                 req.getSession().setAttribute("not availible params", "There is not enough goods in the store");
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_RESULT);
                 requestDispatcher.forward(req, resp);
             } else {
                 if (currentGoods != null) {
@@ -78,7 +78,7 @@ public class CheckAddCasherServlet extends HttpServlet {
                        int newAmount = goodsForUpdate.getAmount() + newPosAmount;
                         if (newAmount > currentGoods.getAmount()) {
                             req.getSession().setAttribute("not availible params", "There is not enough goods in the store");
-                            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
+                            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_RESULT);
                             requestDispatcher.forward(req, resp);
                         } else {
                             goodsForCheck.get(goodsForCheck.indexOf(goodsForUpdate)).setAmount(newAmount);
