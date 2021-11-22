@@ -27,14 +27,6 @@ public class UserRepository {
         roleRepository = RoleRepository.getRoleRepository();
     }
 
-    public void addUser(User user) {
-        try (Connection con = DbManager.getConnection()) {
-            //PreparedStatement preparedStatement = con.prepareStatement();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
-    }
-
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
 
@@ -46,7 +38,6 @@ public class UserRepository {
                 int userId = rs.getInt("id");
                 String userLogin = rs.getString("login");
                 String userPassword = rs.getString("password");
-                //System.out.println(userLogin + userPassword);
                 String userName = rs.getString("name");
                 String userSurname = rs.getString("surname");
                 Role userRoleName = roleRepository.getRoleByName(rs.getString("roleName"));
@@ -60,4 +51,8 @@ public class UserRepository {
         return users;
     }
 
+    public User getCurrentUser (int userId) {
+        List<User> users = getAllUsers();
+        return users.stream().filter(x -> x.getId() == userId).findFirst().orElse(null);
+    }
 }

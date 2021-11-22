@@ -64,15 +64,10 @@ public class ShiftRepository {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int idOpenShift = rs.getInt("id");
-                System.out.println(idOpenShift);
                 boolean isOpenShft = (rs.getInt("isOpen") == 1) ? true : false;
-                System.out.println(isOpenShft);
                 Timestamp openTime = rs.getTimestamp("openTime");
-                System.out.println(openTime);
                 Timestamp closeTime = rs.getTimestamp("closeTime");
-                System.out.println(closeTime);
                 currentShift = new Shift(idOpenShift, isOpenShft, openTime, closeTime);
-                System.out.println(currentShift);
                 shifts.add(currentShift);
             }
         } catch (SQLException e) {
