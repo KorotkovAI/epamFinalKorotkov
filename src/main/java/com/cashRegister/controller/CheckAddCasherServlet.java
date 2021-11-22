@@ -23,7 +23,7 @@ public class CheckAddCasherServlet extends HttpServlet {
     private GoodsRepository goodsRepository;
     private List<Goods> goodsForCheck = new ArrayList<>();
 
-    private static final Logger log = LogManager.getLogger(ExpertAddGoodsServlet.class);
+    private static final Logger log = LogManager.getLogger(CheckAddCasherServlet.class);
 
     public CheckAddCasherServlet() {
         goodsRepository = GoodsRepository.getGoodsRepository();

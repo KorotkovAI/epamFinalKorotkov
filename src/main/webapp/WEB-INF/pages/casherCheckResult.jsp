@@ -38,7 +38,7 @@
             <td>${goods.amount*goods.price}
             </td>
             <td>
-                <a href="/deleteFromCheck?id=${check.id}">Cancel</a>
+                <a href="/deleteFromCheck?id=${goods.id}">Cancel</a>
             </td>
         </tr>
     </c:forEach>
