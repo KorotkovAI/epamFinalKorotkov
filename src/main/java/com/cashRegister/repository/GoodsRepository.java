@@ -173,7 +173,39 @@ public class GoodsRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return true;
+    }
+
+    public boolean returnGoods(List<Goods> goodsList) {
+        if (goodsList != null && !goodsList.isEmpty()) {
+            List<Goods> oldgoods = getAllGoods();
+
+            try {
+                Connection connection = DbManager.getConnection();
+                Statement statement = connection.createStatement();
+
+                for (Goods goods : goodsList) {
+                    Goods oldGoodsForUpdate = oldgoods.stream().filter(x -> x.getId() == goods.getId()).findFirst().orElse(null);
+                    System.out.println( "status" + oldGoodsForUpdate.getId() + "  " + goods.getId());
+                    if (oldGoodsForUpdate != null) {
+                        int newAmount = oldGoodsForUpdate.getAmount() + goods.getAmount();
+                        String currentBatch = String.format(DELETE_FROM_STORE, newAmount, goods.getId());
+                        System.out.println(currentBatch);
+                        statement.addBatch(currentBatch);
+                    } else {
+                        PreparedStatement preparedStatement = connection.prepareStatement(ADD_GOODS);
+                        preparedStatement.setString(1, goods.getName());
+                        preparedStatement.setInt(2, goods.getAmount());
+                        preparedStatement.setDouble(3, goods.getPrice());
+                        preparedStatement.executeUpdate();
+                    }
+                }
+                statement.executeBatch();
+                return true;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return false;
     }
 }

@@ -68,7 +68,7 @@ public class CheckAddCasherServlet extends HttpServlet {
 
             if (newPosAmount > currentGoods.getAmount()) {
                 req.getSession().setAttribute("not availible params", "There is not enough goods in the store");
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_RESULT);
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
                 requestDispatcher.forward(req, resp);
             } else {
                 if (currentGoods != null) {

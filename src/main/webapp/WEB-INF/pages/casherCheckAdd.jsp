@@ -7,17 +7,19 @@
 </head>
 <body>
 <h2>New Check</h2>
+
 <%
     String mes = (String) request.getSession().getAttribute("not availible params");
-
 %>
+
 <p><h4><%=mes != null ? mes : ""%>
+
 </h4> </p>
+
 <a href="/casherStart"><input type="button" value="Back to list"></a>
 
 <form action="" method="post">
 
-    <p><h4>${mes}</h4> </p>
     <table>
         <td>Name:</td>
         <td><select name="namePos">

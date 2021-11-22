@@ -38,7 +38,7 @@
             <td>${goods.amount*goods.price}
             </td>
             <td>
-                <a href="/returnCheck?id=${check.id}">Cancel</a>
+                <a href="/deleteFromCheck?id=${check.id}">Cancel</a>
             </td>
         </tr>
     </c:forEach>
@@ -49,7 +49,7 @@
 </table>
 <tr>
     <td><a href="/createCheck"><input type="button" value="Create"></a></td>
-    <td><input type="reset" value="Reset"></td>
+    <td><a href="/casherStart"><input type="button" value="Reset"></a></td>
 </tr>
 </body>
 </html>

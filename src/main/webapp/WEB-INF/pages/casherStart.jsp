@@ -16,6 +16,11 @@
 <a href="/checkAdd"><input type="button" value="Create new check"></a>
 
 <h2>List of Checks today</h2>
+<%
+    String mes = (String) request.getSession().getAttribute("check returned");
+%>
+
+<p><h4><%=mes != null ? mes : ""%></h4> </p>
 
 <table border="2">
     <tr>
@@ -34,7 +39,7 @@
             <td>${check.sum}
             </td>
             <td>
-                <a href="/returnCheck?id=${check.id}">Return</a>
+                <a href="/returnCheck?id=${check.id}"><input type="button" value="Return"></a>
             </td>
         </tr>
     </c:forEach>
