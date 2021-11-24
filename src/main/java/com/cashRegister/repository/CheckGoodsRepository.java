@@ -47,7 +47,6 @@ public class CheckGoodsRepository {
 
         if (checkId >0) {
             try {
-                System.out.println("get into return checkgoods");
                 Connection connection =DbManager.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(ALL_GOODS_FOR_RETURN);
                 preparedStatement.setInt(1,checkId);
@@ -57,11 +56,9 @@ public class CheckGoodsRepository {
                     String goodsName = rs.getString("nameGoods");
                     int goodsAmount = rs.getInt("amountGoods");
                     double goodsPrice = rs.getDouble("priceGoods");
-                    System.out.println(goodsId + " " + goodsName);
                     goodsForReturn.add(new Goods(goodsId, goodsName, goodsAmount, goodsPrice));
                 }
 
-                goodsForReturn.stream().map(x -> x.getName()).forEach(System.out::print);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

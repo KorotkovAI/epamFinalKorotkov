@@ -1,12 +1,14 @@
 package com.cashRegister.controller;
 
 import com.cashRegister.WebAdresses;
+import com.cashRegister.exception.ShiftNotFoundException;
 import com.cashRegister.model.Check;
 import com.cashRegister.model.Shift;
 import com.cashRegister.model.User;
 import com.cashRegister.repository.CheckRepository;
 import com.cashRegister.repository.ShiftRepository;
 import com.cashRegister.repository.UserRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,52 +23,49 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@WebServlet(WebAdresses.ADMIN_TODAY_CHECKS)
-public class AdminTodayChecksServlet extends HttpServlet {
+@WebServlet(WebAdresses.ADMIN_TODAY_CLOSE)
+public class AdminTodayCloseServlet extends HttpServlet {
 
-    private UserRepository userRepository;
-    private CheckRepository checkRepository;
-    private ShiftRepository shiftRepository;
+    private final UserRepository userRepository;
+    private final CheckRepository checkRepository;
+    private final ShiftRepository shiftRepository;
 
-    private static final Logger log = LogManager.getLogger(AdminTodayChecksServlet.class);
+    private static final Logger log = LogManager.getLogger(AdminTodayCloseServlet.class);
 
-    public AdminTodayChecksServlet() {
+    public AdminTodayCloseServlet() {
         this.userRepository = UserRepository.getUserRepository();
         this.checkRepository = CheckRepository.getCheckRepository();
         this.shiftRepository = ShiftRepository.getShiftRepository();
     }
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (shiftRepository.firstOpenShift() == null) {
-            resp.sendRedirect(WebAdresses.NO_OPEN_REPORT);
-        } else {
-            Shift openShift = shiftRepository.firstOpenShift();
-            if (req.getSession().getAttribute("openShift") != null) {
-                req.getSession().removeAttribute("openShift");
-            }
-            req.getSession().setAttribute("openShift", openShift);
 
+        Shift openShift = shiftRepository.firstOpenShift();
+
+        if (openShift == null) {
+            resp.sendRedirect(WebAdresses.OPEN_SHIFT);
+        } else {
             List<User> usersList = userRepository.getAllUsers();
             Map<User, List<Check>> mapNotReturned = new HashMap<>();
             Map<User, List<Check>> mapReturned = new HashMap<>();
 
-            Double sumNotReturned = 0.0;
-            Double sumReturned = 0.0;
-
+            double sumNotReturned = 0.0;
+            double sumReturned = 0.0;
             for (User user : usersList) {
                 if (user.getRoleName().getName().equals("Casher")) {
                     List<Check> currentCasherChecksNotReturned = checkRepository.getAllChecksCurrentCasherOpenShift(user).
-                            stream().filter(x -> x.isReturned() == false).collect(Collectors.toList());
+                            stream().filter(x -> !x.isReturned()).collect(Collectors.toList());
                     List<Check> currentCasherChecksReturned = checkRepository.getAllChecksCurrentCasherOpenShift(user).
-                            stream().filter(x -> x.isReturned() == true).collect(Collectors.toList());
+                            stream().filter(x -> x.isReturned()).collect(Collectors.toList());
 
-                    if (currentCasherChecksNotReturned != null && !currentCasherChecksNotReturned.isEmpty()) {
+                    if (!currentCasherChecksNotReturned.isEmpty()) {
                         sumNotReturned += currentCasherChecksNotReturned.stream().map(x -> x.getSum()).reduce(Double::sum).get();
                         mapNotReturned.put(user, currentCasherChecksNotReturned);
 
                     }
-                    if (currentCasherChecksReturned != null && !currentCasherChecksReturned.isEmpty()) {
+                    if (!currentCasherChecksReturned.isEmpty()) {
                         sumReturned += currentCasherChecksReturned.stream().map(x -> x.getSum()).reduce(Double::sum).get();
                         mapReturned.put(user, currentCasherChecksReturned);
                     }
@@ -74,17 +73,36 @@ public class AdminTodayChecksServlet extends HttpServlet {
                 }
             }
 
-            if (mapNotReturned != null) {
+            if (!mapNotReturned.isEmpty()) {
                 req.getSession().setAttribute("mapNotReturned", mapNotReturned);
                 req.getSession().setAttribute("sumNotReturned", sumNotReturned);
             }
-            if (mapReturned != null) {
+            if (!mapReturned.isEmpty()) {
                 req.getSession().setAttribute("mapReturned", mapReturned);
                 req.getSession().setAttribute("sumReturned", sumReturned);
             }
 
-            resp.sendRedirect(WebAdresses.X_REPORT);
+            boolean status = false;
+
+            try {
+                status = shiftRepository.closeShift(openShift.getId());
+            } catch (IllegalAccessException | ShiftNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            if (status) {
+                try {
+                    Shift closeShift = shiftRepository.getShiftById(openShift.getId());
+                    req.getSession().setAttribute("closeShift", closeShift);
+                    req.getSession().removeAttribute("openShift");
+                } catch (ShiftNotFoundException e) {
+                    log.printf(Level.ERROR, "Shift not found");
+                }
+                resp.sendRedirect(WebAdresses.Z_REPORT);
+            } else {
+                resp.sendRedirect(WebAdresses.ERROR_PAGE);
+            }
+
         }
     }
-
 }

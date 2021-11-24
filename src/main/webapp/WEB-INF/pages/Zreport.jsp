@@ -3,14 +3,16 @@
 
 <html>
 <head>
-    <title>X report</title>
+    <title>Z report</title>
 </head>
 <body>
 <%@include file="headerAdmin.html" %>
-<h2>X report</h2>
-<p>Open shift №<b> <c:out value="${openShift.id}"/>
+<h2>Z report</h2>
+<p>Shift №<b> <c:out value="${closeShift.id}"/>
 </b></p>
-<p>is opened at<b> <c:out value="${openShift.openTime}"/>
+<p>is opened at<b> <c:out value="${closeShift.openTime}"/>
+</b></p>
+<p>was successfully closed at<b> <c:out value="${closeShift.closeTime}"/>
 </b></p>
 
 <h4>Checks</h4>
@@ -36,7 +38,8 @@
             </tr>
         </c:forEach>
     </table>
-    Sum of checks current Casher: <c:out value="${mapNotReturned.getValue().stream().map(x -> x.getSum()).reduce( (a, b) -> a + b).get()}"/>
+    Sum of checks current Casher:
+    <c:out value="${mapNotReturned.getValue().stream().map(x -> x.getSum()).reduce( (a, b) -> a + b).get()}"/>
 </c:forEach>
 
 <c:out value="${mapNotReturned.key.name}"/>
@@ -70,7 +73,9 @@ Total sum of checks: <c:out value="${sumNotReturned}"/>
 
 Total sum of returned checks: <c:out value="${sumReturned}"/>
 <h2></h2>
-<a href="/adminTodayClose"><input type="button" value="Make Z report"></a>
+<h2>Do you want to open new shift?</h2>
+<a href="/adminTodayClose"><input type="button" value="Yes"></a>
+<a href="/adminTodayClose"><input type="button" value="No"></a>
 
 </body>
 </html>

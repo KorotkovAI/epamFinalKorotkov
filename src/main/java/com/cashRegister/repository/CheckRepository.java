@@ -141,28 +141,4 @@ public class CheckRepository {
         }
         return false;
     }
-/*
-    public Map<User, List<Check>> getAllChecksTodayByUser(Shift openShift) {
-        List<User> cashers = new ArrayList<>();
-
-        try {
-            Role casher = roleRepository.getRoleByName("Casher");
-            cashers = userRepository.getAllUsers().stream().filter(x -> x.getRoleName().equals(casher)).
-                    collect(Collectors.toList());
-            cashers.stream().forEach(System.out::println);
-        } catch (RoleNotFoundException e) {
-            e.printStackTrace();
-        }
-        Map<User, List<Check>> finalMap = new HashMap<>();
-        for (User user : cashers) {
-            List<Check> tempCheckList = getAllChecksCurrentCasherOpenShift(user);
-            tempCheckList.stream().map(x -> x.getId()).forEach(System.out::println);
-            finalMap.put(user, tempCheckList);
-        }
-
-        return finalMap;
-    }
-
- */
-
 }
