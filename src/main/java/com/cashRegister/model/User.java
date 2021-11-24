@@ -1,5 +1,7 @@
 package com.cashRegister.model;
 
+import java.util.Objects;
+
 public class User {
     private int id;
     private String login;
@@ -67,5 +69,30 @@ public class User {
 
     public void setRoleName(Role roleName) {
         this.roleName = roleName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && login.equals(user.login) && password.equals(user.password) && name.equals(user.name) && surname.equals(user.surname) && roleName.equals(user.roleName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, password, name, surname, roleName);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", roleName=" + roleName +
+                '}';
     }
 }

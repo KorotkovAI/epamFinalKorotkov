@@ -1,5 +1,7 @@
 package com.cashRegister.model;
 
+import java.util.Objects;
+
 public class CheckGoods {
     private int id;
     private int idGoods;
@@ -69,4 +71,28 @@ public class CheckGoods {
         this.idCheck = idCheck;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CheckGoods that = (CheckGoods) o;
+        return id == that.id && idGoods == that.idGoods && amountGoods == that.amountGoods && Double.compare(that.priceGoods, priceGoods) == 0 && nameGoods.equals(that.nameGoods) && idCheck.equals(that.idCheck);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idGoods, nameGoods, amountGoods, priceGoods, idCheck);
+    }
+
+    @Override
+    public String toString() {
+        return "CheckGoods{" +
+                "id=" + id +
+                ", idGoods=" + idGoods +
+                ", nameGoods='" + nameGoods + '\'' +
+                ", amountGoods=" + amountGoods +
+                ", priceGoods=" + priceGoods +
+                ", idCheck=" + idCheck +
+                '}';
+    }
 }

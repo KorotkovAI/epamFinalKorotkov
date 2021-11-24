@@ -1,6 +1,7 @@
 package com.cashRegister.model;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class Check {
     private int id;
@@ -70,5 +71,30 @@ public class Check {
 
     public void setUserId(User userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Check check = (Check) o;
+        return id == check.id && Double.compare(check.sum, sum) == 0 && isReturned == check.isReturned && timestamp.equals(check.timestamp) && shiftId.equals(check.shiftId) && userId.equals(check.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, sum, timestamp, isReturned, shiftId, userId);
+    }
+
+    @Override
+    public String toString() {
+        return "Check{" +
+                "id=" + id +
+                ", sum=" + sum +
+                ", timestamp=" + timestamp +
+                ", isReturned=" + isReturned +
+                ", shiftId=" + shiftId +
+                ", userId=" + userId +
+                '}';
     }
 }
