@@ -14,4 +14,7 @@ public class WebAdresses {
     public static final String CASHER_CHECK_RESULT_SERVLET = "/casherCheckResult";
     public static final String CASHER_RETURN_CHECK = "/returnCheck";
     public static final String CASHER_DELETE_GOODS_FROM_CHECK = "/deleteFromCheck";
+    public static final String ADMIN_TODAY_CHECKS = "/adminTodayChecks";
+    public static final String NO_OPEN_REPORT = "/src/main/webapp/WEB-INF/pages/noOpenReport.jsp";
+    public static final String X_REPORT = "src/main/webapp/WEB-INF/pages/Xreport.jsp";
 }
