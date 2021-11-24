@@ -13,6 +13,7 @@ public class ShiftRepository {
     private static final String ALL_OPEN_SHIFTS = "SELECT * FROM shifts WHERE isOpen = 1;";
     private static final String CLOSE_SHIFT = "UPDATE shifts SET isOpen = 0, closeTime = ? WHERE id = ?;";
     private static final String ALL_SHIFTS = "SELECT * FROM shifts;";
+    private static final String OPEN_SHIFT = "INSERT INTO shifts SET isOpen = 1, openTime = ?;";
 
     private static ShiftRepository shiftRepository;
 
@@ -95,5 +96,18 @@ public class ShiftRepository {
             }
         }
         throw new IllegalAccessException("wrong idShift");
+    }
+
+    public boolean openShift() {
+        try {
+            Connection connection = DbManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(OPEN_SHIFT);
+            preparedStatement.setString(1, String.valueOf(new Timestamp(System.currentTimeMillis())));
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
     }
 }

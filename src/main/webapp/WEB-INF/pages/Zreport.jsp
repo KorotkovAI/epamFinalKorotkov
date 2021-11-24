@@ -74,8 +74,8 @@ Total sum of checks: <c:out value="${sumNotReturned}"/>
 Total sum of returned checks: <c:out value="${sumReturned}"/>
 <h2></h2>
 <h2>Do you want to open new shift?</h2>
-<a href="/adminTodayClose"><input type="button" value="Yes"></a>
-<a href="/adminTodayClose"><input type="button" value="No"></a>
+<a href="/openShift"><input type="button" value="Yes"></a>
+<a href="/"><input type="button" value="No"></a>
 
 </body>
 </html>

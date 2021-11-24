@@ -18,7 +18,8 @@ public class WebAdresses {
     public static final String NO_OPEN_REPORT = "/src/main/webapp/WEB-INF/pages/noOpenReport.jsp";
     public static final String X_REPORT = "src/main/webapp/WEB-INF/pages/Xreport.jsp";
     public static final String ADMIN_TODAY_CLOSE = "/adminTodayClose";
-    public static final String OPEN_SHIFT = "src/main/webapp/WEB-INF/pages/openShift.jsp";
+    public static final String OPEN_SHIFT = "/openShift";
     public static final String Z_REPORT = "src/main/webapp/WEB-INF/pages/Zreport.jsp";
+    public static final String OPEN_SHIFT_PAGE = "src/main/webapp/WEB-INF/pages/openShift.jsp";
 
 }

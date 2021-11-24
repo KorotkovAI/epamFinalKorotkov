@@ -27,7 +27,6 @@ public class HomeServlet extends HttpServlet {
         this.roleRepository = RoleRepository.getRoleRepository();
     }
 
-    //WEB-INF/pages/home.jsp
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.HOME_PAGE);

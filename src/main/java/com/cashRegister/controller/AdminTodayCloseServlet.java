@@ -45,7 +45,7 @@ public class AdminTodayCloseServlet extends HttpServlet {
         Shift openShift = shiftRepository.firstOpenShift();
 
         if (openShift == null) {
-            resp.sendRedirect(WebAdresses.OPEN_SHIFT);
+            resp.sendRedirect(WebAdresses.NO_OPEN_REPORT);
         } else {
             List<User> usersList = userRepository.getAllUsers();
             Map<User, List<Check>> mapNotReturned = new HashMap<>();
