@@ -14,7 +14,7 @@
 <p>Today is <b> <c:out value = "${localDate}" />
 </b></p>
 
-<a href="/goodsAdd" id="button">Add new position</a>
+<a href="/goodsAdd"><input type="button" value="Add new position"></a>
 
 <h2>List of Goods</h2>
 
@@ -38,10 +38,10 @@
             <td>${goods.getPrice()}
             </td>
             <td>
-                <a href="/goodsUpdate?id=${goods.getId()}">Update</a>
+                <a href="/goodsUpdate?id=${goods.getId()}"><input type="button" value="Update"></a>
             </td>
             <td>
-                <a href="/deleteGoods?goods=${goods.getName()}">Delete</a>
+                <a href="/deleteGoods?goods=${goods.getName()}"><input type="button" value="Delete"></a>
             </td>
         </tr>
     </c:forEach>

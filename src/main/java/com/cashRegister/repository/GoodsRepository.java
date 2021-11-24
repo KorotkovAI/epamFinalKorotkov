@@ -65,7 +65,7 @@ public class GoodsRepository {
 
     public boolean update(Goods newGoods) throws GoodsNotFoundException {
         List<Goods> goodsList = getAllGoods();
-        Goods oldGoods = goodsList.get(newGoods.getId());
+        Goods oldGoods = goodsList.stream().filter(x -> x.getId() == newGoods.getId()).findFirst().orElse(null);
 
         if (oldGoods != null) {
             if (oldGoods.equals(newGoods)) {

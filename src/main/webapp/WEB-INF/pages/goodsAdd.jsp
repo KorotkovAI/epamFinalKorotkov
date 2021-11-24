@@ -5,10 +5,10 @@
 </head>
 <body>
 <h2>Goods Add</h2>
-<a href="/expertStart">Back to list</a>
+<a href="/expertStart"><input type="button" value="Back to list"></a>
 <form action="" method="post">
     <%
-        String mes = (String) request.getAttribute("not save goods");
+        String mes = (String) request.getSession().getAttribute("not save goods");
 
     %>
     <p><h4><%=mes != null ? mes : ""%>

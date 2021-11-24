@@ -2,16 +2,17 @@ package com.cashRegister.repository;
 
 import com.cashRegister.DbManager;
 import com.cashRegister.exception.CheckReturnedException;
+import com.cashRegister.exception.RoleNotFoundException;
 import com.cashRegister.exception.ShiftNotFoundException;
-import com.cashRegister.model.Check;
-import com.cashRegister.model.Goods;
-import com.cashRegister.model.Shift;
-import com.cashRegister.model.User;
+import com.cashRegister.model.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CheckRepository {
 
@@ -19,6 +20,7 @@ public class CheckRepository {
     private static ShiftRepository shiftRepository;
     private static CheckGoodsRepository checkGoodsRepository;
     private static UserRepository userRepository;
+    private static RoleRepository roleRepository;
 
     private static final String ALL_CHECKS_THIS_SHIFT = "SELECT * FROM checks WHERE users_id = ? AND shifts_id = ?;";
     private static final String ADD_CHECK = "INSERT INTO checks SET checksum = ?, checktime = ?, isreturned = 0, shifts_id = ?, users_id = ?;";
@@ -36,6 +38,7 @@ public class CheckRepository {
         shiftRepository = ShiftRepository.getShiftRepository();
         checkGoodsRepository = CheckGoodsRepository.getCheckGoodsRepository();
         userRepository = UserRepository.getUserRepository();
+        roleRepository = RoleRepository.getRoleRepository();
     }
 
     public List<Check> getAllChecksCurrentCasherOpenShift(User user) {
@@ -97,7 +100,6 @@ public class CheckRepository {
 
     public Check getCurrentCheck(int checkId) {
         Check currentCheck = null;
-        System.out.println("get in method getCurrent check");
         try {
             Connection connection = DbManager.getConnection();
             PreparedStatement pstm = connection.prepareStatement(SELECT_CURRENT_CHECK);
@@ -111,7 +113,6 @@ public class CheckRepository {
                 int usersId = resultSet.getInt("Users_id");
                 currentCheck = new Check(checkId, checkSum, checkTime, isReturned,
                         shiftRepository.getShiftById(shiftId), userRepository.getCurrentUser(usersId));
-                System.out.println(currentCheck.getId() + "id check");
                 break;
             }
         } catch (SQLException | ShiftNotFoundException throwables) {
@@ -123,12 +124,9 @@ public class CheckRepository {
     public boolean checkReturn(int checkId) throws CheckReturnedException {
 
         if (checkId > 0) {
-            System.out.println("get into method");
             Check currentCheck = getCurrentCheck(checkId);
-            System.out.println(currentCheck + "currentcheck");
             if (!currentCheck.isReturned()) {
                 try {
-                    System.out.println("check not returned");
                     Connection connection = DbManager.getConnection();
                     PreparedStatement preparedStatement = connection.prepareStatement(RETURN_CHECK);
                     preparedStatement.setInt(1, checkId);
@@ -143,5 +141,28 @@ public class CheckRepository {
         }
         return false;
     }
+/*
+    public Map<User, List<Check>> getAllChecksTodayByUser(Shift openShift) {
+        List<User> cashers = new ArrayList<>();
+
+        try {
+            Role casher = roleRepository.getRoleByName("Casher");
+            cashers = userRepository.getAllUsers().stream().filter(x -> x.getRoleName().equals(casher)).
+                    collect(Collectors.toList());
+            cashers.stream().forEach(System.out::println);
+        } catch (RoleNotFoundException e) {
+            e.printStackTrace();
+        }
+        Map<User, List<Check>> finalMap = new HashMap<>();
+        for (User user : cashers) {
+            List<Check> tempCheckList = getAllChecksCurrentCasherOpenShift(user);
+            tempCheckList.stream().map(x -> x.getId()).forEach(System.out::println);
+            finalMap.put(user, tempCheckList);
+        }
+
+        return finalMap;
+    }
+
+ */
 
 }

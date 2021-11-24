@@ -64,22 +64,23 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
             req.getSession().setAttribute("wrongMining", "Sorry you use not correct value");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
             requestDispatcher.forward(req, resp);
-        }
+        } else {
 
-        Goods newGoods = new Goods(newGoodsId, newGoodsName, newGoodsAmount, newGoodsPrice);
+            Goods newGoods = new Goods(newGoodsId, newGoodsName, newGoodsAmount, newGoodsPrice);
 
-        try {
-            boolean updateComplite = goodsRepository.update(newGoods);
-            if (updateComplite) {
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
-                requestDispatcher.forward(req, resp);
+            try {
+                boolean updateComplite = goodsRepository.update(newGoods);
+                if (updateComplite) {
+                    RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
+                    requestDispatcher.forward(req, resp);
+                } else {
+                    req.getSession().setAttribute("notFoundGoods", "Sorry something wrong with goods");
+                    RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
+                    requestDispatcher.forward(req, resp);
+                }
+            } catch (GoodsNotFoundException e) {
+                System.out.println("exception goods");
             }
-        } catch (GoodsNotFoundException e) {
-            System.out.println("exception goods");
         }
-
-        req.getSession().setAttribute("notFoundGoods", "Sorry something wrong with goods");
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
-        requestDispatcher.forward(req, resp);
     }
 }

@@ -7,7 +7,7 @@
 </head>
 <body>
 <h2>Goods Update</h2>
-<a href="/expertStart">Back to list</a>
+<a href="/expertStart"><input type="button" value="Back to list"></a>
 <form action="" method="post">
 
     <table>

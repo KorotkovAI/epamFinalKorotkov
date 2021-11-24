@@ -42,14 +42,13 @@ public class ExpertAddGoodsServlet extends HttpServlet {
             newGoodsAmount = Integer.parseInt(req.getParameter("amountGoods"));
             newGoodsPrice = Double.parseDouble(req.getParameter("priceGoods"));
         } catch (Exception e) {
-            System.out.println("problem");
-            req.setAttribute("not save goods", "Can't use this mining");
+            req.getSession().setAttribute("not save goods", "Can't use this mining");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_ADD);
             requestDispatcher.forward(req, resp);
         }
 
         if (newGoodsAmount < 0 || newGoodsName == null || newGoodsPrice < 0.0) {
-            req.setAttribute("not save goods", "Can't be empty or zero");
+            req.getSession().setAttribute("not save goods", "Can't be empty or negative");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_ADD);
             requestDispatcher.forward(req, resp);
         }
@@ -58,10 +57,10 @@ public class ExpertAddGoodsServlet extends HttpServlet {
         boolean isAdd = goodsRepository.addGoods(goods);
 
         if (isAdd) {
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_START_PAGE);
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
             requestDispatcher.forward(req, resp);
         } else {
-            req.setAttribute("not save goods", "Can't use this name");
+            req.getSession().setAttribute("not save goods", "Can't use this name");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_ADD);
             requestDispatcher.forward(req, resp);
         }

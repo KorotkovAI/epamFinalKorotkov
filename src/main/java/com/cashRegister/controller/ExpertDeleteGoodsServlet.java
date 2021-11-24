@@ -1,5 +1,6 @@
 package com.cashRegister.controller;
 
+import com.cashRegister.WebAdresses;
 import com.cashRegister.exception.GoodsNotFoundException;
 import com.cashRegister.model.Goods;
 import com.cashRegister.repository.GoodsRepository;
@@ -36,23 +37,16 @@ public class ExpertDeleteGoodsServlet extends HttpServlet {
             List<Goods> goodsList = goodsRepository.getAllGoods();
             req.getSession().setAttribute("goodsList", goodsList);
 
-            System.out.println(isDeletedGoods);
             if (isDeletedGoods) {
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
                 requestDispatcher.forward(req, resp);
             } else {
-                System.out.println("I cant see this");
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
+                RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.ERROR_PAGE);
                 requestDispatcher.forward(req, resp);
-                System.out.println("too match");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("dopost");
-    }
 }
