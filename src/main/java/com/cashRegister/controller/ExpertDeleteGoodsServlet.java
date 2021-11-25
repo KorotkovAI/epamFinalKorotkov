@@ -30,22 +30,18 @@ public class ExpertDeleteGoodsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            String currentGoodsName = req.getParameter("goods");
-            boolean isDeletedGoods = goodsRepository.deleteByName(currentGoodsName);
-            req.getSession().removeAttribute("goodsList");
-            List<Goods> goodsList = goodsRepository.getAllGoods();
-            req.getSession().setAttribute("goodsList", goodsList);
+        String currentGoodsName = req.getParameter("goods");
+        boolean isDeletedGoods = goodsRepository.deleteByName(currentGoodsName);
+        req.getSession().removeAttribute("goodsList");
+        List<Goods> goodsList = goodsRepository.getAllGoods();
+        req.getSession().setAttribute("goodsList", goodsList);
 
-            if (isDeletedGoods) {
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
-                requestDispatcher.forward(req, resp);
-            } else {
-                RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.ERROR_PAGE);
-                requestDispatcher.forward(req, resp);
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        if (isDeletedGoods) {
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
+            requestDispatcher.forward(req, resp);
+        } else {
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.ERROR_PAGE);
+            requestDispatcher.forward(req, resp);
         }
     }
 

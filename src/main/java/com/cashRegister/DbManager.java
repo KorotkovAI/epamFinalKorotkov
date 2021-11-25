@@ -8,12 +8,17 @@ public class DbManager {
     private static final String jdbcUrl = "jdbc:mysql://localhost:3306/cashregister";
     private static final String jdbcUser = "root";
     private static final String jdbcPassword = "PppSQL2501!";
-    static Connection con = null;
+    private static DbManager dbManager;
 
-    public static Connection getConnection() {
-        if (con != null) {
-            return con;
+    public static synchronized DbManager getInstance() {
+        if (dbManager == null) {
+            dbManager = new DbManager();
         }
+        return dbManager;
+    }
+
+    public Connection getConnection() {
+        Connection con = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);

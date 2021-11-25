@@ -27,10 +27,14 @@ public class ShiftRepository {
 
     public Shift firstOpenShift() {
         Shift currentShift = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+
         try {
-            Connection connection = DbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(ALL_OPEN_SHIFTS);
-            ResultSet rs = preparedStatement.executeQuery();
+            connection = DbManager.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(ALL_OPEN_SHIFTS);
+            rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int idOpenShift = rs.getInt("id");
                 boolean isOpenShft = (rs.getInt("isOpen") == 1) ? true : false;
@@ -41,6 +45,12 @@ public class ShiftRepository {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return currentShift;
     }
@@ -58,11 +68,14 @@ public class ShiftRepository {
     public List<Shift> getAllShifts() {
         List<Shift> shifts = new ArrayList<>();
         Shift currentShift = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
 
         try {
-            Connection connection = DbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(ALL_SHIFTS);
-            ResultSet rs = preparedStatement.executeQuery();
+            connection = DbManager.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(ALL_SHIFTS);
+            rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int idOpenShift = rs.getInt("id");
                 boolean isOpenShft = (rs.getInt("isOpen") == 1) ? true : false;
@@ -73,6 +86,12 @@ public class ShiftRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return shifts;
     }
@@ -80,13 +99,15 @@ public class ShiftRepository {
     public boolean closeShift(int idShift) throws IllegalAccessException, ShiftNotFoundException {
         if (idShift > 0) {
             Shift currentShift = getShiftById(idShift);
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
 
             if (!currentShift.isOpen()) {
                 return false;
             }
             try {
-                Connection connection = DbManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(CLOSE_SHIFT);
+                connection = DbManager.getInstance().getConnection();
+                preparedStatement = connection.prepareStatement(CLOSE_SHIFT);
                 preparedStatement.setString(1, String.valueOf(new Timestamp(System.currentTimeMillis())));
                 preparedStatement.setInt(2, currentShift.getId());
                 preparedStatement.executeUpdate();
@@ -94,19 +115,35 @@ public class ShiftRepository {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         throw new IllegalAccessException("wrong idShift");
     }
 
     public boolean openShift() {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
         try {
-            Connection connection = DbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(OPEN_SHIFT);
+            connection = DbManager.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(OPEN_SHIFT);
             preparedStatement.setString(1, String.valueOf(new Timestamp(System.currentTimeMillis())));
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }

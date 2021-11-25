@@ -2,17 +2,13 @@ package com.cashRegister.repository;
 
 import com.cashRegister.DbManager;
 import com.cashRegister.exception.CheckReturnedException;
-import com.cashRegister.exception.RoleNotFoundException;
 import com.cashRegister.exception.ShiftNotFoundException;
 import com.cashRegister.model.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CheckRepository {
 
@@ -45,13 +41,16 @@ public class CheckRepository {
         if (user != null) {
             List<Check> checks = new ArrayList<>();
             Shift openshift = shiftRepository.firstOpenShift();
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet rs = null;
 
             try {
-                Connection connection = DbManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(ALL_CHECKS_THIS_SHIFT);
+                connection = DbManager.getInstance().getConnection();
+                preparedStatement = connection.prepareStatement(ALL_CHECKS_THIS_SHIFT);
                 preparedStatement.setInt(1, user.getId());
                 preparedStatement.setInt(2, openshift.getId());
-                ResultSet rs = preparedStatement.executeQuery();
+                rs = preparedStatement.executeQuery();
                 while (rs.next()) {
                     int idCheck = rs.getInt("id");
                     double checkSum = rs.getDouble("CheckSum");
@@ -61,6 +60,12 @@ public class CheckRepository {
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
             return checks;
         }
@@ -78,9 +83,12 @@ public class CheckRepository {
                 cheksum += goods.getAmount() * goods.getPrice();
             }
 
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+
             try {
-                Connection connection = DbManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(ADD_CHECK, new String[]{"id"});
+                connection = DbManager.getInstance().getConnection();
+                preparedStatement = connection.prepareStatement(ADD_CHECK, new String[]{"id"});
                 preparedStatement.setDouble(1, cheksum);
                 preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
                 preparedStatement.setInt(3, shift.getId());
@@ -93,6 +101,12 @@ public class CheckRepository {
                 }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return primarykey;
@@ -100,11 +114,15 @@ public class CheckRepository {
 
     public Check getCurrentCheck(int checkId) {
         Check currentCheck = null;
+        Connection connection = null;
+        PreparedStatement pstm = null;
+        ResultSet resultSet = null;
+
         try {
-            Connection connection = DbManager.getConnection();
-            PreparedStatement pstm = connection.prepareStatement(SELECT_CURRENT_CHECK);
+            connection = DbManager.getInstance().getConnection();
+            pstm = connection.prepareStatement(SELECT_CURRENT_CHECK);
             pstm.setInt(1, checkId);
-            ResultSet resultSet = pstm.executeQuery();
+            resultSet = pstm.executeQuery();
             while (resultSet.next()) {
                 double checkSum = resultSet.getDouble("CheckSum");
                 Timestamp checkTime = resultSet.getTimestamp("CheckTime");
@@ -117,6 +135,12 @@ public class CheckRepository {
             }
         } catch (SQLException | ShiftNotFoundException throwables) {
             throwables.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return currentCheck;
     }
@@ -125,15 +149,25 @@ public class CheckRepository {
 
         if (checkId > 0) {
             Check currentCheck = getCurrentCheck(checkId);
+
             if (!currentCheck.isReturned()) {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+
                 try {
-                    Connection connection = DbManager.getConnection();
-                    PreparedStatement preparedStatement = connection.prepareStatement(RETURN_CHECK);
+                    connection = DbManager.getInstance().getConnection();
+                    preparedStatement = connection.prepareStatement(RETURN_CHECK);
                     preparedStatement.setInt(1, checkId);
                     preparedStatement.execute();
                     return true;
                 } catch (SQLException e) {
                     e.printStackTrace();
+                } finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 throw new CheckReturnedException("check already returned");

@@ -23,10 +23,12 @@ public class CheckGoodsRepository {
 
     public boolean addCheckGoodsList(List<Goods> goodsList, int checkId) {
         if (!goodsList.isEmpty() || goodsList != null || checkId > 0) {
+            Connection connection = null;
+            Statement stmt = null;
 
             try {
-                Connection connection = DbManager.getConnection();
-                Statement stmt = connection.createStatement();
+                connection = DbManager.getInstance().getConnection();
+                stmt = connection.createStatement();
                 for (Goods goods : goodsList) {
                     String currentBatch = String.format(ADD_CHECKGOODS, goods.getId(), goods.getName(),
                             goods.getAmount(), goods.getPrice(), checkId);
@@ -36,6 +38,12 @@ public class CheckGoodsRepository {
                 stmt.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
             return true;
         }
@@ -46,11 +54,15 @@ public class CheckGoodsRepository {
         List<Goods> goodsForReturn = new ArrayList<>();
 
         if (checkId >0) {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            ResultSet rs = null;
+
             try {
-                Connection connection =DbManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(ALL_GOODS_FOR_RETURN);
+                connection =DbManager.getInstance().getConnection();
+                preparedStatement = connection.prepareStatement(ALL_GOODS_FOR_RETURN);
                 preparedStatement.setInt(1,checkId);
-                ResultSet rs = preparedStatement.executeQuery();
+                rs = preparedStatement.executeQuery();
                 while (rs.next()) {
                     int goodsId = rs.getInt("idGoods");
                     String goodsName = rs.getString("nameGoods");

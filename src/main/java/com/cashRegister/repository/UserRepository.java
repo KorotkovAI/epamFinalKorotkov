@@ -29,11 +29,14 @@ public class UserRepository {
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
 
         try {
-            Connection connection = DbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
-            ResultSet rs = preparedStatement.executeQuery();
+            connection = DbManager.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);
+            rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int userId = rs.getInt("id");
                 String userLogin = rs.getString("login");
@@ -47,11 +50,17 @@ public class UserRepository {
             e2.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return users;
     }
 
-    public User getCurrentUser (int userId) {
+    public User getCurrentUser(int userId) {
         List<User> users = getAllUsers();
         return users.stream().filter(x -> x.getId() == userId).findFirst().orElse(null);
     }

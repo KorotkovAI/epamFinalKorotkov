@@ -36,10 +36,14 @@ public class RoleRepository {
 
     public List<Role> getAllRoles() {
         List<Role> roles = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+
         try {
-            Connection connection = DbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ROLES);
-            ResultSet rs = preparedStatement.executeQuery();
+            connection = DbManager.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(SELECT_ALL_ROLES);
+            rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int roleId = rs.getInt("id");
                 String roleName = rs.getString("name");
@@ -47,6 +51,12 @@ public class RoleRepository {
             }
         } catch (SQLException e2) {
             e2.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return roles;
     }

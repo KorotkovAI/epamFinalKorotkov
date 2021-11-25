@@ -26,10 +26,14 @@ public class GoodsRepository {
 
     public List<Goods> getAllGoods() {
         List<Goods> goods = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet rs = null;
+
         try {
-            Connection connection = DbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_GOODS);
-            ResultSet rs = preparedStatement.executeQuery();
+            connection = DbManager.getInstance().getConnection();
+            preparedStatement = connection.prepareStatement(SELECT_ALL_GOODS);
+            rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int goodsId = rs.getInt("id");
                 String goodsName = rs.getString("name");
@@ -39,6 +43,12 @@ public class GoodsRepository {
             }
         } catch (SQLException e2) {
             e2.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return goods;
     }
@@ -71,10 +81,12 @@ public class GoodsRepository {
             if (oldGoods.equals(newGoods)) {
                 return false;
             }
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
 
             try {
-                Connection connection = DbManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_GOODS);
+                connection = DbManager.getInstance().getConnection();
+                preparedStatement = connection.prepareStatement(UPDATE_GOODS);
                 preparedStatement.setString(1, newGoods.getName());
                 preparedStatement.setInt(2, newGoods.getAmount());
                 preparedStatement.setDouble(3, newGoods.getPrice());
@@ -83,22 +95,34 @@ public class GoodsRepository {
                 return true;
             } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-
         }
-
         return false;
     }
 
-    public boolean deleteByName(String goodsName) throws SQLException {
+    public boolean deleteByName(String goodsName) {
         List<Goods> goodsList = goodsRepository.getAllGoods();
         Goods goods = goodsList.stream().filter(x -> x.getName().equals(goodsName)).findFirst().get();
         int newParam = goods.getId();
+
         if (newParam != -1) {
-            Connection connection = DbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_GOODS);
-            preparedStatement.setInt(1, newParam);
-            preparedStatement.executeUpdate();
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+
+            try {
+                connection = DbManager.getInstance().getConnection();
+                preparedStatement = connection.prepareStatement(DELETE_GOODS);
+                preparedStatement.setInt(1, newParam);
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             return true;
         }
         return false;
@@ -108,10 +132,14 @@ public class GoodsRepository {
         if (goods != null) {
             List<Goods> goodsList = getAllGoods();
             boolean status = goodsList.stream().anyMatch(x -> x.getName().equals(goods.getName()));
+
             if (!status) {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+
                 try {
-                    Connection connection = DbManager.getConnection();
-                    PreparedStatement preparedStatement = connection.prepareStatement(ADD_GOODS);
+                    connection = DbManager.getInstance().getConnection();
+                    preparedStatement = connection.prepareStatement(ADD_GOODS);
                     preparedStatement.setString(1, goods.getName());
                     preparedStatement.setInt(2, goods.getAmount());
                     preparedStatement.setDouble(3, goods.getPrice());
@@ -119,6 +147,12 @@ public class GoodsRepository {
                     return true;
                 } catch (SQLException e) {
                     e.printStackTrace();
+                } finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -126,9 +160,13 @@ public class GoodsRepository {
     }
 
     public boolean deleteGoodsForCheck(List<Goods> goodsList) {
+        Connection connection = null;
+        Statement statement = null;
+        Statement stmtRollBack = null;
+
         try {
-            Connection connection = DbManager.getConnection();
-            Statement statement = connection.createStatement();
+            connection = DbManager.getInstance().getConnection();
+            statement = connection.createStatement();
             List<Goods> oldGoods = getAllGoods();
             for (Goods goods : goodsList) {
                 if (goods.getId() > 0 || goods.getAmount() > 0) {
@@ -161,7 +199,7 @@ public class GoodsRepository {
             }
 
             if (checkIsMinus) {
-                Statement stmtRollBack = connection.createStatement();
+                stmtRollBack = connection.createStatement();
                 for (Goods goodsForRollback : goodsList) {
                     String rollbackBatch = String.format(DELETE_FROM_STORE,
                             oldGoods.get(goodsForRollback.getId()).getAmount(), goodsForRollback.getId());
@@ -172,6 +210,12 @@ public class GoodsRepository {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }
@@ -179,21 +223,22 @@ public class GoodsRepository {
     public boolean returnGoods(List<Goods> goodsList) {
         if (goodsList != null && !goodsList.isEmpty()) {
             List<Goods> oldgoods = getAllGoods();
+            Connection connection = null;
+            Statement statement = null;
+            PreparedStatement preparedStatement = null;
 
             try {
-                Connection connection = DbManager.getConnection();
-                Statement statement = connection.createStatement();
+                connection = DbManager.getInstance().getConnection();
+                statement = connection.createStatement();
 
                 for (Goods goods : goodsList) {
                     Goods oldGoodsForUpdate = oldgoods.stream().filter(x -> x.getId() == goods.getId()).findFirst().orElse(null);
-                    System.out.println( "status" + oldGoodsForUpdate.getId() + "  " + goods.getId());
                     if (oldGoodsForUpdate != null) {
                         int newAmount = oldGoodsForUpdate.getAmount() + goods.getAmount();
                         String currentBatch = String.format(DELETE_FROM_STORE, newAmount, goods.getId());
-                        System.out.println(currentBatch);
                         statement.addBatch(currentBatch);
                     } else {
-                        PreparedStatement preparedStatement = connection.prepareStatement(ADD_GOODS);
+                        preparedStatement = connection.prepareStatement(ADD_GOODS);
                         preparedStatement.setString(1, goods.getName());
                         preparedStatement.setInt(2, goods.getAmount());
                         preparedStatement.setDouble(3, goods.getPrice());
@@ -204,6 +249,12 @@ public class GoodsRepository {
                 return true;
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
         return false;
