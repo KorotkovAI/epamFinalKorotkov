@@ -4,6 +4,7 @@ import com.cashRegister.model.User;
 import com.cashRegister.WebAdresses;
 import com.cashRegister.repository.RoleRepository;
 import com.cashRegister.repository.UserRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,10 +36,9 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-
-        log.debug("get login " + login + " password" + password);
 
         String currentRole;
         String forwardPage = WebAdresses.ERROR_PAGE;
@@ -46,16 +46,12 @@ public class HomeServlet extends HttpServlet {
         for (User user : userRepository.getAllUsers()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 currentRole = user.getRoleName().getName();
-                try {
-                    if (currentRole.equals("Admin")) {
-                        forwardPage = WebAdresses.ADMIN_START_PAGE;
-                    } else if (currentRole.equals("Casher")) {
-                        forwardPage = WebAdresses.CASHER_START_PAGE;
-                    } else if (currentRole.equals("CommodityExpert")) {
-                        forwardPage = "/expertStart";
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (currentRole.equals("Admin")) {
+                    forwardPage = WebAdresses.ADMIN_START_PAGE;
+                } else if (currentRole.equals("Casher")) {
+                    forwardPage = WebAdresses.CASHER_START_PAGE;
+                } else if (currentRole.equals("CommodityExpert")) {
+                    forwardPage = "/expertStart";
                 }
                 req.getSession().setAttribute("user", user);
                 requestDispatcher = req.getRequestDispatcher(forwardPage);

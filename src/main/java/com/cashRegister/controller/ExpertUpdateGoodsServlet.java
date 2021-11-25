@@ -4,6 +4,7 @@ import com.cashRegister.WebAdresses;
 import com.cashRegister.exception.GoodsNotFoundException;
 import com.cashRegister.model.Goods;
 import com.cashRegister.repository.GoodsRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,10 +33,8 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
         try {
             int goodsId = Integer.parseInt(req.getParameter("id"));
             goods = GoodsRepository.getGoodsRepository().getGoodsById(goodsId);
-            System.out.println(goodsId);
-            System.out.println(goods.getName());
         } catch (GoodsNotFoundException e) {
-            e.printStackTrace();
+            log.log(Level.ERROR, e);
         }
         req.getSession().setAttribute("goodsForUpdate", goods);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
@@ -55,6 +54,7 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
             newGoodsAmount = Integer.parseInt(req.getParameter("amountGoods"));
             newGoodsPrice = Double.parseDouble(req.getParameter("priceGoods"));
         } catch (NumberFormatException e) {
+            log.log(Level.ERROR, e);
             req.getSession().setAttribute("wrongMining", "Sorry you use not correct value");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
             requestDispatcher.forward(req, resp);
@@ -79,7 +79,7 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
                     requestDispatcher.forward(req, resp);
                 }
             } catch (GoodsNotFoundException e) {
-                System.out.println("exception goods");
+                log.log(Level.ERROR, e);
             }
         }
     }

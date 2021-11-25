@@ -3,6 +3,7 @@ package com.cashRegister.controller;
 import com.cashRegister.WebAdresses;
 import com.cashRegister.model.Goods;
 import com.cashRegister.repository.GoodsRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,6 +43,7 @@ public class ExpertAddGoodsServlet extends HttpServlet {
             newGoodsAmount = Integer.parseInt(req.getParameter("amountGoods"));
             newGoodsPrice = Double.parseDouble(req.getParameter("priceGoods"));
         } catch (Exception e) {
+            log.log(Level.ERROR, e);
             req.getSession().setAttribute("not save goods", "Can't use this mining");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_ADD);
             requestDispatcher.forward(req, resp);

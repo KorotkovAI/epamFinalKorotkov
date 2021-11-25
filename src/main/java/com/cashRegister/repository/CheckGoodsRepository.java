@@ -1,7 +1,11 @@
 package com.cashRegister.repository;
 
 import com.cashRegister.DbManager;
+import com.cashRegister.controller.ExpertUpdateGoodsServlet;
 import com.cashRegister.model.Goods;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,6 +14,8 @@ import java.util.List;
 public class CheckGoodsRepository {
 
     private static CheckGoodsRepository checkGoodsRepository;
+
+    private static final Logger log = LogManager.getLogger(CheckGoodsRepository.class);
 
     private String ADD_CHECKGOODS = "INSERT INTO checkgoods SET idgoods = %d, namegoods = '%s', amountgoods = %d, pricegoods = %s, checks_id = %d;";
     private static final String ALL_GOODS_FOR_RETURN = "SELECT * FROM checkgoods WHERE checks_id = ?;";
@@ -35,14 +41,13 @@ public class CheckGoodsRepository {
                     stmt.addBatch(currentBatch);
                 }
                 stmt.executeBatch();
-                stmt.close();
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.log(Level.ERROR, throwables);
             } finally {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.ERROR, e);
                 }
             }
             return true;
@@ -72,7 +77,7 @@ public class CheckGoodsRepository {
                 }
 
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
         }
         return goodsForReturn;

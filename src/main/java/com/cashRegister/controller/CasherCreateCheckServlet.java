@@ -8,6 +8,7 @@ import com.cashRegister.model.User;
 import com.cashRegister.repository.CheckGoodsRepository;
 import com.cashRegister.repository.CheckRepository;
 import com.cashRegister.repository.GoodsRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,6 +48,7 @@ public class CasherCreateCheckServlet extends HttpServlet {
                 idCreatedCheck = checkRepository.createCheck(goodsCheck, currentShift, currentUser);
                 req.getSession().removeAttribute("goodsForCheck");
             } else {
+                log.log(Level.ERROR, "into method come empty goodsCheck");
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
 
@@ -54,6 +56,7 @@ public class CasherCreateCheckServlet extends HttpServlet {
             if (idCreatedCheck > 0) {
                 addgoods = checkGoodsRepository.addCheckGoodsList(goodsCheck, idCreatedCheck);
             } else {
+                log.log(Level.ERROR, "check did not created");
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
 
@@ -68,6 +71,7 @@ public class CasherCreateCheckServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_START_PAGE);
                 requestDispatcher.forward(req, resp);
             } else {
+                log.log(Level.ERROR, "something going wrong with check or goods");
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
         }

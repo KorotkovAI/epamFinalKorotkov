@@ -6,6 +6,7 @@ import com.cashRegister.model.Goods;
 import com.cashRegister.repository.CheckGoodsRepository;
 import com.cashRegister.repository.CheckRepository;
 import com.cashRegister.repository.GoodsRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,6 +53,7 @@ public class CasherReturnCheckServlet extends HttpServlet {
                 resp.sendRedirect(WebAdresses.CASHER_START_PAGE);
             }
         } else {
+            log.log(Level.ERROR, "did not get ID in param");
             resp.sendRedirect(WebAdresses.ERROR_PAGE);
         }
     }

@@ -3,6 +3,9 @@ package com.cashRegister.repository;
 import com.cashRegister.DbManager;
 import com.cashRegister.exception.RoleNotFoundException;
 import com.cashRegister.model.Role;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +18,8 @@ public class RoleRepository {
     private static final String SELECT_ALL_ROLES = "SELECT * FROM roles;";
 
     private static RoleRepository roleRepository = null;
+
+    private static final Logger log = LogManager.getLogger(RoleRepository.class);
 
     public synchronized static RoleRepository getRoleRepository() {
         if (roleRepository == null) {
@@ -30,6 +35,7 @@ public class RoleRepository {
                 return role;
             }
         }
+        log.log(Level.ERROR, "role with NAME " + name + " not found");
         throw new RoleNotFoundException("role with NAME " + name + " not found");
     }
 
@@ -50,12 +56,12 @@ public class RoleRepository {
                 roles.add(new Role(roleId, roleName));
             }
         } catch (SQLException e2) {
-            e2.printStackTrace();
+            log.log(Level.ERROR, e2);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
         }
         return roles;

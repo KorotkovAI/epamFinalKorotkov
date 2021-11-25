@@ -3,6 +3,9 @@ package com.cashRegister.repository;
 import com.cashRegister.DbManager;
 import com.cashRegister.exception.GoodsNotFoundException;
 import com.cashRegister.model.Goods;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,6 +19,9 @@ public class GoodsRepository {
     private String DELETE_FROM_STORE = "UPDATE goods SET amount = %d WHERE id = %d;";
 
     private static GoodsRepository goodsRepository = null;
+
+    private static final Logger log = LogManager.getLogger(GoodsRepository.class);
+
 
     public synchronized static GoodsRepository getGoodsRepository() {
         if (goodsRepository == null) {
@@ -60,6 +66,7 @@ public class GoodsRepository {
                 return goods;
             }
         }
+        log.log(Level.ERROR, "goods with ID " + id + " not found");
         throw new GoodsNotFoundException("goods with ID " + id + " not found");
     }
 
@@ -70,6 +77,7 @@ public class GoodsRepository {
                 return goods;
             }
         }
+        log.log(Level.ERROR, "goods with name " + name + " not found");
         throw new GoodsNotFoundException("goods with name " + name + " not found");
     }
 
@@ -79,6 +87,7 @@ public class GoodsRepository {
 
         if (oldGoods != null) {
             if (oldGoods.equals(newGoods)) {
+                log.log(Level.ERROR, "equals goods");
                 return false;
             }
             Connection connection = null;
@@ -94,12 +103,12 @@ public class GoodsRepository {
                 preparedStatement.executeUpdate();
                 return true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             } finally {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.ERROR, e);
                 }
             }
         }
@@ -121,7 +130,7 @@ public class GoodsRepository {
                 preparedStatement.setInt(1, newParam);
                 preparedStatement.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
             return true;
         }
@@ -146,12 +155,12 @@ public class GoodsRepository {
                     preparedStatement.executeUpdate();
                     return true;
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.ERROR, e);
                 } finally {
                     try {
                         connection.close();
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        log.log(Level.ERROR, e);
                     }
                 }
             }
@@ -209,12 +218,12 @@ public class GoodsRepository {
                 return false;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.ERROR, e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
         }
         return true;
@@ -248,12 +257,12 @@ public class GoodsRepository {
                 statement.executeBatch();
                 return true;
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.log(Level.ERROR, throwables);
             } finally {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.ERROR, e);
                 }
             }
         }

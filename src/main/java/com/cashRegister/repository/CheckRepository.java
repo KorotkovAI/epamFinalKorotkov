@@ -4,6 +4,9 @@ import com.cashRegister.DbManager;
 import com.cashRegister.exception.CheckReturnedException;
 import com.cashRegister.exception.ShiftNotFoundException;
 import com.cashRegister.model.*;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -17,6 +20,8 @@ public class CheckRepository {
     private static CheckGoodsRepository checkGoodsRepository;
     private static UserRepository userRepository;
     private static RoleRepository roleRepository;
+
+    private static final Logger log = LogManager.getLogger(CheckRepository.class);
 
     private static final String ALL_CHECKS_THIS_SHIFT = "SELECT * FROM checks WHERE users_id = ? AND shifts_id = ?;";
     private static final String ADD_CHECK = "INSERT INTO checks SET checksum = ?, checktime = ?, isreturned = 0, shifts_id = ?, users_id = ?;";
@@ -59,16 +64,17 @@ public class CheckRepository {
                     checks.add(new Check(idCheck, checkSum, checkTime, isReturned, openshift, user));
                 }
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.log(Level.ERROR, throwables);
             } finally {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.ERROR, e);
                 }
             }
             return checks;
         }
+        log.log(Level.ERROR, "user cannot be null");
         throw new NullPointerException("user cannot be null");
     }
 
@@ -100,12 +106,12 @@ public class CheckRepository {
                     }
                 }
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.log(Level.ERROR, throwables);
             } finally {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.ERROR, e);
                 }
             }
         }
@@ -134,12 +140,12 @@ public class CheckRepository {
                 break;
             }
         } catch (SQLException | ShiftNotFoundException throwables) {
-            throwables.printStackTrace();
+            log.log(Level.ERROR, throwables);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
         }
         return currentCheck;
@@ -161,12 +167,12 @@ public class CheckRepository {
                     preparedStatement.execute();
                     return true;
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.ERROR, e);
                 } finally {
                     try {
                         connection.close();
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        log.log(Level.ERROR, e);
                     }
                 }
             } else {

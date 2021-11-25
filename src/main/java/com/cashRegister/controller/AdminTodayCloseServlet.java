@@ -46,6 +46,7 @@ public class AdminTodayCloseServlet extends HttpServlet {
 
         if (openShift == null) {
             resp.sendRedirect(WebAdresses.NO_OPEN_REPORT);
+            log.log(Level.ERROR, "There is no open report");
         } else {
             List<User> usersList = userRepository.getAllUsers();
             Map<User, List<Check>> mapNotReturned = new HashMap<>();

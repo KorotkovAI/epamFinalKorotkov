@@ -2,6 +2,7 @@ package com.cashRegister.controller;
 
 import com.cashRegister.WebAdresses;
 import com.cashRegister.model.Goods;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,7 +43,7 @@ public class CasherDeleteFromCheckServlet extends HttpServlet {
                 resp.sendRedirect(WebAdresses.CASHER_CHECK_RESULT_SERVLET);
             }
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            log.log(Level.ERROR, e);
         }
     }
 }

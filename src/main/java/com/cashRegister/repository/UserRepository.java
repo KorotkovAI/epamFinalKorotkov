@@ -3,15 +3,21 @@ package com.cashRegister.repository;
 import com.cashRegister.DbManager;
 import com.cashRegister.model.Role;
 import com.cashRegister.model.User;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserRepository {
+
     private static final String INSERT_USER = "INSERT INTO users" +
             " (login, password, name, surname, roleName) VALUES " + " (?, ?, ?);";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users;";
+
+    private static final Logger log = LogManager.getLogger(UserRepository.class);
 
     private RoleRepository roleRepository;
     private static UserRepository userRepository = null;
@@ -47,14 +53,14 @@ public class UserRepository {
                 users.add(new User(userId, userLogin, userPassword, userName, userSurname, userRoleName));
             }
         } catch (SQLException e2) {
-            e2.printStackTrace();
+            log.log(Level.ERROR, e2);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.log(Level.ERROR, e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
         }
         return users;

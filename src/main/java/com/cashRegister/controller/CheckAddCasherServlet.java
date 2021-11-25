@@ -4,6 +4,7 @@ import com.cashRegister.WebAdresses;
 import com.cashRegister.exception.GoodsNotFoundException;
 import com.cashRegister.model.Goods;
 import com.cashRegister.repository.GoodsRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,7 +48,7 @@ public class CheckAddCasherServlet extends HttpServlet {
             newPosName = req.getParameter("namePos");
             newPosAmount = Integer.parseInt(req.getParameter("amountPos"));
         } catch (Exception e) {
-            System.out.println("problem");
+            log.log(Level.ERROR, e);
             req.getSession().setAttribute("not availible params", "Can't use this mining");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
             requestDispatcher.forward(req, resp);
@@ -63,7 +64,8 @@ public class CheckAddCasherServlet extends HttpServlet {
             try {
                 currentGoods = goodsRepository.getGoodsByName(newPosName);
             } catch (GoodsNotFoundException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
+
             }
 
             if (newPosAmount > currentGoods.getAmount()) {

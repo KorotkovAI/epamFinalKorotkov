@@ -3,6 +3,9 @@ package com.cashRegister.repository;
 import com.cashRegister.DbManager;
 import com.cashRegister.exception.ShiftNotFoundException;
 import com.cashRegister.model.Shift;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,6 +19,8 @@ public class ShiftRepository {
     private static final String OPEN_SHIFT = "INSERT INTO shifts SET isOpen = 1, openTime = ?;";
 
     private static ShiftRepository shiftRepository;
+
+    private static final Logger log = LogManager.getLogger(ShiftRepository.class);
 
     public synchronized static ShiftRepository getShiftRepository() {
         if (shiftRepository == null) {
@@ -44,12 +49,12 @@ public class ShiftRepository {
                 break;
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            log.log(Level.ERROR, throwables);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
         }
         return currentShift;
@@ -62,6 +67,7 @@ public class ShiftRepository {
                 return shift;
             }
         }
+        log.log(Level.ERROR, "shift with ID " + idShift + " not found");
         throw new ShiftNotFoundException("shift with ID " + idShift + " not found");
     }
 
@@ -85,12 +91,12 @@ public class ShiftRepository {
                 shifts.add(currentShift);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.ERROR, e);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
         }
         return shifts;
@@ -113,13 +119,13 @@ public class ShiftRepository {
                 preparedStatement.executeUpdate();
                 return true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
             finally {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    log.log(Level.ERROR, e);
                 }
             }
         }
@@ -137,12 +143,12 @@ public class ShiftRepository {
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            log.log(Level.ERROR, throwables);
         } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e);
             }
         }
         return false;
