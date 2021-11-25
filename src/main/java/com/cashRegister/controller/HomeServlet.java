@@ -2,9 +2,7 @@ package com.cashRegister.controller;
 
 import com.cashRegister.model.User;
 import com.cashRegister.WebAdresses;
-import com.cashRegister.repository.RoleRepository;
 import com.cashRegister.repository.UserRepository;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,14 +16,12 @@ import java.io.*;
 
 @WebServlet(value = {"/", "/home"})
 public class HomeServlet extends HttpServlet {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
 
     private static final Logger log = LogManager.getLogger(HomeServlet.class);
 
     public HomeServlet() {
-        this.userRepository = UserRepository.getUserRepository();
-        this.roleRepository = RoleRepository.getRoleRepository();
+        userRepository = UserRepository.getUserRepository();
     }
 
     @Override

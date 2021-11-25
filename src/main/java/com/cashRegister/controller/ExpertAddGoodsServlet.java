@@ -18,12 +18,12 @@ import java.io.IOException;
 @WebServlet("/goodsAdd")
 public class ExpertAddGoodsServlet extends HttpServlet {
 
-    private GoodsRepository goodsRepository;
+    private final GoodsRepository goodsRepository;
 
     private static final Logger log = LogManager.getLogger(ExpertAddGoodsServlet.class);
 
     public ExpertAddGoodsServlet() {
-        this.goodsRepository = GoodsRepository.getGoodsRepository();
+        goodsRepository = GoodsRepository.getGoodsRepository();
     }
 
     @Override

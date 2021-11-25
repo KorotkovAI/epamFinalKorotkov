@@ -18,12 +18,12 @@ import java.util.List;
 
 @WebServlet("/expertStart")
 public class ExpertStartServlet extends HttpServlet {
-    private GoodsRepository goodsRepository;
+    private final GoodsRepository goodsRepository;
 
     private static final Logger log = LogManager.getLogger(ExpertStartServlet.class);
 
     public ExpertStartServlet() {
-        this.goodsRepository = GoodsRepository.getGoodsRepository();
+        goodsRepository = GoodsRepository.getGoodsRepository();
     }
 
     @Override

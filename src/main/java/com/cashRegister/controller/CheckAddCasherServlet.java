@@ -21,8 +21,8 @@ import java.util.List;
 @WebServlet("/checkAdd")
 public class CheckAddCasherServlet extends HttpServlet {
 
-    private GoodsRepository goodsRepository;
-    private List<Goods> goodsForCheck = new ArrayList<>();
+    private final GoodsRepository goodsRepository;
+    private final List<Goods> goodsForCheck = new ArrayList<>();
 
     private static final Logger log = LogManager.getLogger(CheckAddCasherServlet.class);
 

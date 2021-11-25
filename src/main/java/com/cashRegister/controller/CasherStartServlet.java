@@ -22,14 +22,12 @@ import java.util.List;
 @WebServlet(WebAdresses.CASHER_START_PAGE)
 public class CasherStartServlet extends HttpServlet {
 
-    private ShiftRepository shiftRepository;
-    private CheckRepository checkRepository;
+    private final CheckRepository checkRepository;
 
     private static final Logger log = LogManager.getLogger(CasherStartServlet.class);
 
     public CasherStartServlet() {
-        this.shiftRepository = ShiftRepository.getShiftRepository();
-        this.checkRepository = CheckRepository.getCheckRepository();
+        checkRepository = CheckRepository.getCheckRepository();
     }
 
     @Override

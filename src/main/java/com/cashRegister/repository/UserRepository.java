@@ -19,7 +19,7 @@ public class UserRepository {
 
     private static final Logger log = LogManager.getLogger(UserRepository.class);
 
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
     private static UserRepository userRepository = null;
 
     public synchronized static UserRepository getUserRepository() {
@@ -52,8 +52,6 @@ public class UserRepository {
                 Role userRoleName = roleRepository.getRoleByName(rs.getString("roleName"));
                 users.add(new User(userId, userLogin, userPassword, userName, userSurname, userRoleName));
             }
-        } catch (SQLException e2) {
-            log.log(Level.ERROR, e2);
         } catch (Exception e) {
             log.log(Level.ERROR, e);
         } finally {

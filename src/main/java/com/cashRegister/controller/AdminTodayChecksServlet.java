@@ -24,16 +24,16 @@ import java.util.stream.Collectors;
 @WebServlet(WebAdresses.ADMIN_TODAY_CHECKS)
 public class AdminTodayChecksServlet extends HttpServlet {
 
-    private UserRepository userRepository;
-    private CheckRepository checkRepository;
-    private ShiftRepository shiftRepository;
+    private final UserRepository userRepository;
+    private final CheckRepository checkRepository;
+    private final ShiftRepository shiftRepository;
 
     private static final Logger log = LogManager.getLogger(AdminTodayChecksServlet.class);
 
     public AdminTodayChecksServlet() {
-        this.userRepository = UserRepository.getUserRepository();
-        this.checkRepository = CheckRepository.getCheckRepository();
-        this.shiftRepository = ShiftRepository.getShiftRepository();
+        userRepository = UserRepository.getUserRepository();
+        checkRepository = CheckRepository.getCheckRepository();
+        shiftRepository = ShiftRepository.getShiftRepository();
     }
 
     @Override
@@ -57,9 +57,9 @@ public class AdminTodayChecksServlet extends HttpServlet {
             for (User user : usersList) {
                 if (user.getRoleName().getName().equals("Casher")) {
                     List<Check> currentCasherChecksNotReturned = checkRepository.getAllChecksCurrentCasherOpenShift(user).
-                            stream().filter(x -> x.isReturned() == false).collect(Collectors.toList());
+                            stream().filter(x -> !x.isReturned()).collect(Collectors.toList());
                     List<Check> currentCasherChecksReturned = checkRepository.getAllChecksCurrentCasherOpenShift(user).
-                            stream().filter(x -> x.isReturned() == true).collect(Collectors.toList());
+                            stream().filter(x -> x.isReturned()).collect(Collectors.toList());
 
                     if (currentCasherChecksNotReturned != null && !currentCasherChecksNotReturned.isEmpty()) {
                         sumNotReturned += currentCasherChecksNotReturned.stream().map(x -> x.getSum()).reduce(Double::sum).get();

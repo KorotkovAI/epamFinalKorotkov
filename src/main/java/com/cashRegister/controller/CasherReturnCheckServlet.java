@@ -21,16 +21,16 @@ import java.util.List;
 @WebServlet(WebAdresses.CASHER_RETURN_CHECK)
 public class CasherReturnCheckServlet extends HttpServlet {
 
-    private CheckRepository checkRepository;
-    private CheckGoodsRepository checkGoodsRepository;
-    private GoodsRepository goodsRepository;
+    private final CheckRepository checkRepository;
+    private final CheckGoodsRepository checkGoodsRepository;
+    private final GoodsRepository goodsRepository;
 
     private static final Logger log = LogManager.getLogger(CasherReturnCheckServlet.class);
 
     public CasherReturnCheckServlet() {
-        this.checkRepository = CheckRepository.getCheckRepository();
-        this.checkGoodsRepository = CheckGoodsRepository.getCheckGoodsRepository();
-        this.goodsRepository = GoodsRepository.getGoodsRepository();
+        checkRepository = CheckRepository.getCheckRepository();
+        checkGoodsRepository = CheckGoodsRepository.getCheckGoodsRepository();
+        goodsRepository = GoodsRepository.getGoodsRepository();
     }
 
     @Override

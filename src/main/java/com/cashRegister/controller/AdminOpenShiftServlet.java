@@ -17,12 +17,12 @@ import java.io.IOException;
 @WebServlet(WebAdresses.OPEN_SHIFT)
 public class AdminOpenShiftServlet extends HttpServlet {
 
-    ShiftRepository shiftRepository;
+    private final ShiftRepository shiftRepository;
 
     private static final Logger log = LogManager.getLogger(AdminOpenShiftServlet.class);
 
     public AdminOpenShiftServlet() {
-        this.shiftRepository = ShiftRepository.getShiftRepository();
+        shiftRepository = ShiftRepository.getShiftRepository();
     }
 
     @Override

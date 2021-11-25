@@ -24,16 +24,16 @@ import java.util.List;
 @WebServlet("/createCheck")
 public class CasherCreateCheckServlet extends HttpServlet {
 
-    private GoodsRepository goodsRepository;
-    private CheckRepository checkRepository;
-    private CheckGoodsRepository checkGoodsRepository;
+    private final GoodsRepository goodsRepository;
+    private final CheckRepository checkRepository;
+    private final CheckGoodsRepository checkGoodsRepository;
 
     private static final Logger log = LogManager.getLogger(CasherCreateCheckServlet.class);
 
     public CasherCreateCheckServlet() {
-        this.goodsRepository = GoodsRepository.getGoodsRepository();
-        this.checkRepository = CheckRepository.getCheckRepository();
-        this.checkGoodsRepository = CheckGoodsRepository.getCheckGoodsRepository();
+        goodsRepository = GoodsRepository.getGoodsRepository();
+        checkRepository = CheckRepository.getCheckRepository();
+        checkGoodsRepository = CheckGoodsRepository.getCheckGoodsRepository();
     }
 
     @Override

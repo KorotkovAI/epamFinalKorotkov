@@ -19,7 +19,6 @@ public class CheckRepository {
     private static ShiftRepository shiftRepository;
     private static CheckGoodsRepository checkGoodsRepository;
     private static UserRepository userRepository;
-    private static RoleRepository roleRepository;
 
     private static final Logger log = LogManager.getLogger(CheckRepository.class);
 
@@ -39,7 +38,6 @@ public class CheckRepository {
         shiftRepository = ShiftRepository.getShiftRepository();
         checkGoodsRepository = CheckGoodsRepository.getCheckGoodsRepository();
         userRepository = UserRepository.getUserRepository();
-        roleRepository = RoleRepository.getRoleRepository();
     }
 
     public List<Check> getAllChecksCurrentCasherOpenShift(User user) {

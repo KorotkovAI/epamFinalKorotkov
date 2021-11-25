@@ -1,7 +1,6 @@
 package com.cashRegister.repository;
 
 import com.cashRegister.DbManager;
-import com.cashRegister.controller.ExpertUpdateGoodsServlet;
 import com.cashRegister.model.Goods;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

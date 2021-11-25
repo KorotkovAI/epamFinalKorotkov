@@ -1,7 +1,6 @@
 package com.cashRegister.controller;
 
 import com.cashRegister.WebAdresses;
-import com.cashRegister.exception.GoodsNotFoundException;
 import com.cashRegister.model.Goods;
 import com.cashRegister.repository.GoodsRepository;
 import org.apache.logging.log4j.LogManager;
@@ -14,18 +13,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/deleteGoods")
 public class ExpertDeleteGoodsServlet extends HttpServlet {
 
-    private GoodsRepository goodsRepository;
+    private final GoodsRepository goodsRepository;
 
     private static final Logger log = LogManager.getLogger(ExpertDeleteGoodsServlet.class);
 
     public ExpertDeleteGoodsServlet() {
-        this.goodsRepository = GoodsRepository.getGoodsRepository();
+        goodsRepository = GoodsRepository.getGoodsRepository();
     }
 
     @Override
@@ -36,13 +34,14 @@ public class ExpertDeleteGoodsServlet extends HttpServlet {
         List<Goods> goodsList = goodsRepository.getAllGoods();
         req.getSession().setAttribute("goodsList", goodsList);
 
+        RequestDispatcher requestDispatcher;
         if (isDeletedGoods) {
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
-            requestDispatcher.forward(req, resp);
+            requestDispatcher = req.getRequestDispatcher("/expertStart");
         } else {
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.ERROR_PAGE);
-            requestDispatcher.forward(req, resp);
+            requestDispatcher = req.getRequestDispatcher(WebAdresses.ERROR_PAGE);
         }
+        requestDispatcher.forward(req, resp);
+
     }
 
 }
