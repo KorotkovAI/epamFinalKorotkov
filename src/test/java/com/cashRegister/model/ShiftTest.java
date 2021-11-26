@@ -1,6 +1,5 @@
 package com.cashRegister.model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,12 +18,6 @@ public class ShiftTest {
     public void BeforeTest() {
         shiftOnlyWithTime = new Shift();
         shiftWithId = new Shift(2, true, openTime, closeTime);
-    }
-
-    @After
-    public void AfterTest() {
-        shiftWithId = null;
-        shiftOnlyWithTime = null;
     }
 
     @Test

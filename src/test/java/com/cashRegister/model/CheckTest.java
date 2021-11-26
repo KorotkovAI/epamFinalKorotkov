@@ -1,6 +1,5 @@
 package com.cashRegister.model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,12 +20,6 @@ public class CheckTest {
     public void BeforeTest() {
         checkFull = new Check(5, 45.1, timestamp, false, currentShift, currentUser);
         checkWithoutId = new Check(45.1, timestamp, false, currentShift, currentUser);
-    }
-
-    @After
-    public void AfterTest() {
-        checkFull = null;
-        checkWithoutId = null;
     }
 
     @Test

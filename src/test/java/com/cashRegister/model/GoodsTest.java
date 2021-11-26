@@ -1,6 +1,5 @@
 package com.cashRegister.model;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,12 +14,6 @@ public class GoodsTest {
     public void BeforeTest() {
         goodsWithOutId = new Goods("Carrot", 3, 4.5);
         goodsFull = new Goods(3, "Banana", 5, 2.1);
-    }
-
-    @After
-    public void AfterTest() {
-        goodsFull = null;
-        goodsWithOutId = null;
     }
 
     @Test

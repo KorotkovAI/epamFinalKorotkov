@@ -1,7 +1,6 @@
 package com.cashRegister;
 
 import com.cashRegister.model.Role;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,12 +15,6 @@ public class RoleTest {
     public void beforeTest() {
         roleOnlyWithName = new Role("Tester");
         roleWithId = new Role(5, "Gamer");
-    }
-
-    @After
-    public void afterTest() {
-        roleWithId = null;
-        roleOnlyWithName = null;
     }
 
     @Test

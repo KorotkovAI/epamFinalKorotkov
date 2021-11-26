@@ -51,6 +51,10 @@ public class CheckGoods {
         return idCheck;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setIdGoods(int idGoods) {
         this.idGoods = idGoods;
     }
