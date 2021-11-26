@@ -29,6 +29,10 @@ public class Check {
         this.userId = user;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

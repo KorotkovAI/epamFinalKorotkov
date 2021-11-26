@@ -26,6 +26,14 @@ public class Shift {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setOpenTime(Timestamp openTime) {
+        this.openTime = openTime;
+    }
+
     public boolean isOpen() {
         return isOpen;
     }

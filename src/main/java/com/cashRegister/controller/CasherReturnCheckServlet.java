@@ -41,7 +41,6 @@ public class CasherReturnCheckServlet extends HttpServlet {
                 boolean status = checkRepository.checkReturn(idCurrentCheck);
                 if (status) {
                     List<Goods> goodsForReturn = checkGoodsRepository.returnCheckGoods(idCurrentCheck);
-                    System.out.println("goods for return");
                     boolean res = goodsRepository.returnGoods(goodsForReturn);
                     if (res) {
                         req.getSession().setAttribute("check returned", "check successfully returned back money for client");
