@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class works with checks
+ */
 public class CheckRepository {
 
     private static CheckRepository checkRepository;
@@ -40,6 +43,12 @@ public class CheckRepository {
         userRepository = UserRepository.getUserRepository();
     }
 
+    /**
+     * This method returns a list of checks that were created during currently open shift
+     * @param user The user whose checks we want to receive
+     * @return a list of checks that were created during currently open shift of concrete user
+     * @throws NullPointerException if parameter user == null
+     */
     public List<Check> getAllChecksCurrentCasherOpenShift(User user) {
         if (user != null) {
             List<Check> checks = new ArrayList<>();
@@ -76,6 +85,13 @@ public class CheckRepository {
         throw new NullPointerException("user cannot be null");
     }
 
+    /**
+     * This method create check in database
+     * @param goodsList List of goods in check
+     * @param shift The shift in which the check is created
+     * @param user The user who created the check
+     * @return id of created check
+     */
     public int createCheck(List<Goods> goodsList, Shift shift, User user) {
 
         int primarykey = 0;
@@ -116,6 +132,12 @@ public class CheckRepository {
         return primarykey;
     }
 
+    /**
+     * The method returns a check by its id
+     * @param checkId id of check, which we want get from database
+     * @return concrete check
+     * @throws IllegalArgumentException if parameter checkId less than 0
+     */
     public Check getCurrentCheck(int checkId) {
         Check currentCheck = null;
         Connection connection = null;
@@ -153,6 +175,12 @@ public class CheckRepository {
         }
     }
 
+    /**
+     * This method marks the check as returned
+     * @param checkId id of check, which we want return
+     * @return true, if the operation was successful
+     * @throws CheckReturnedException if check already been returned
+     */
     public boolean checkReturn(int checkId) throws CheckReturnedException {
 
         if (checkId > 0) {
@@ -178,7 +206,7 @@ public class CheckRepository {
                     }
                 }
             } else {
-                throw new CheckReturnedException("check already returned");
+                throw new CheckReturnedException("check already been returned");
             }
         }
         return false;

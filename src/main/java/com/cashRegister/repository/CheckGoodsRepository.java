@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class works with goods that have already been added to the check
+ */
 public class CheckGoodsRepository {
 
     private static CheckGoodsRepository checkGoodsRepository;
@@ -26,6 +29,12 @@ public class CheckGoodsRepository {
         return checkGoodsRepository;
     }
 
+    /**
+     * This method fill the table in the database after the check is created
+     * @param goodsList Goods from check
+     * @param checkId Id of the current check
+     * @return Return true if the goods were successfully added to the database table
+     */
     public boolean addCheckGoodsList(List<Goods> goodsList, int checkId) {
         if (!goodsList.isEmpty() || goodsList != null || checkId > 0) {
             Connection connection = null;
@@ -54,6 +63,12 @@ public class CheckGoodsRepository {
         return false;
     }
 
+    /**
+     * This method is used to extract the list of goods when returning a check
+     * @param checkId Id of the concrete check
+     * @return list of goods to be returned to the warehouse
+     * @throws IllegalArgumentException If checkId less than 0
+     */
     public List<Goods> returnCheckGoods(int checkId) {
         List<Goods> goodsForReturn = new ArrayList<>();
 
