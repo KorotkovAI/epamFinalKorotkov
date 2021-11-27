@@ -122,31 +122,35 @@ public class CheckRepository {
         PreparedStatement pstm = null;
         ResultSet resultSet = null;
 
-        try {
-            connection = DbManager.getInstance().getConnection();
-            pstm = connection.prepareStatement(SELECT_CURRENT_CHECK);
-            pstm.setInt(1, checkId);
-            resultSet = pstm.executeQuery();
-            while (resultSet.next()) {
-                double checkSum = resultSet.getDouble("CheckSum");
-                Timestamp checkTime = resultSet.getTimestamp("CheckTime");
-                boolean isReturned = (resultSet.getInt("isReturned") == 1) ? true : false;
-                int shiftId = resultSet.getInt("Shifts_id");
-                int usersId = resultSet.getInt("Users_id");
-                currentCheck = new Check(checkId, checkSum, checkTime, isReturned,
-                        shiftRepository.getShiftById(shiftId), userRepository.getCurrentUser(usersId));
-                break;
-            }
-        } catch (SQLException | ShiftNotFoundException throwables) {
-            log.log(Level.ERROR, throwables);
-        } finally {
+        if (checkId > 0) {
             try {
-                connection.close();
-            } catch (SQLException e) {
-                log.log(Level.ERROR, e);
+                connection = DbManager.getInstance().getConnection();
+                pstm = connection.prepareStatement(SELECT_CURRENT_CHECK);
+                pstm.setInt(1, checkId);
+                resultSet = pstm.executeQuery();
+                while (resultSet.next()) {
+                    double checkSum = resultSet.getDouble("CheckSum");
+                    Timestamp checkTime = resultSet.getTimestamp("CheckTime");
+                    boolean isReturned = (resultSet.getInt("isReturned") == 1) ? true : false;
+                    int shiftId = resultSet.getInt("Shifts_id");
+                    int usersId = resultSet.getInt("Users_id");
+                    currentCheck = new Check(checkId, checkSum, checkTime, isReturned,
+                            shiftRepository.getShiftById(shiftId), userRepository.getCurrentUser(usersId));
+                    break;
+                }
+            } catch (SQLException | ShiftNotFoundException throwables) {
+                log.log(Level.ERROR, throwables);
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    log.log(Level.ERROR, e);
+                }
             }
+            return currentCheck;
+        } else {
+            throw new IllegalArgumentException("Check id can not be less then 0");
         }
-        return currentCheck;
     }
 
     public boolean checkReturn(int checkId) throws CheckReturnedException {

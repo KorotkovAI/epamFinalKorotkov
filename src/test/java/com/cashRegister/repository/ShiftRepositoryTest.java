@@ -2,7 +2,6 @@ package com.cashRegister.repository;
 
 import com.cashRegister.exception.ShiftNotFoundException;
 import com.cashRegister.model.Shift;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +12,7 @@ import static org.mockito.Mockito.*;
 
 public class ShiftRepositoryTest {
 
-    ShiftRepository shiftRepository;
+    private ShiftRepository shiftRepository;
 
     @Before
     public void beforeStart() {
@@ -25,7 +24,7 @@ public class ShiftRepositoryTest {
     public void firstOpenShift() {
         when(shiftRepository.firstOpenShift()).thenCallRealMethod();
         Shift currentShift = shiftRepository.firstOpenShift();
-        assertTrue(currentShift != null);
+        assertNotNull(currentShift );
     }
 
     @Test
@@ -46,10 +45,10 @@ public class ShiftRepositoryTest {
 
     @Test(expected = ShiftNotFoundException.class)
     public void falseGetShiftById() throws ShiftNotFoundException {
-        Integer shiftId = Integer.MAX_VALUE;
+        int shiftId = Integer.MAX_VALUE;
         when(shiftRepository.getAllShifts()).thenCallRealMethod();
         when(shiftRepository.getShiftById(shiftId)).thenCallRealMethod();
-        Shift currentShift = shiftRepository.getShiftById(shiftId);
+        shiftRepository.getShiftById(shiftId);
     }
 /*
     @Test
@@ -72,7 +71,7 @@ public class ShiftRepositoryTest {
         when(shiftRepository.getAllShifts()).thenCallRealMethod();
         when(shiftRepository.getShiftById(openShiftId)).thenCallRealMethod();
         when(shiftRepository.closeShift(openShiftId)).thenCallRealMethod();
-        boolean result = shiftRepository.closeShift(openShiftId);
+        shiftRepository.closeShift(openShiftId);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -81,7 +80,7 @@ public class ShiftRepositoryTest {
         when(shiftRepository.getAllShifts()).thenCallRealMethod();
         when(shiftRepository.getShiftById(openShiftId)).thenCallRealMethod();
         when(shiftRepository.closeShift(openShiftId)).thenCallRealMethod();
-        boolean result = shiftRepository.closeShift(openShiftId);
+        shiftRepository.closeShift(openShiftId);
     }
 /*
     @Test

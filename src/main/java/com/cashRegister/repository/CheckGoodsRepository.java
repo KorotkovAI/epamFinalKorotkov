@@ -78,6 +78,8 @@ public class CheckGoodsRepository {
             } catch (SQLException e) {
                 log.log(Level.ERROR, e);
             }
+        } else {
+            throw new IllegalArgumentException("check id can not be less then 0");
         }
         return goodsForReturn;
     }

@@ -5,7 +5,6 @@ import com.cashRegister.model.Role;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -13,10 +12,10 @@ import static org.mockito.Mockito.*;
 
 public class RoleRepositoryTest {
 
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Before
-    public void beforeStart() throws SQLException {
+    public void beforeStart() {
         roleRepository = mock(RoleRepository.class);
     }
 
@@ -41,6 +40,6 @@ public class RoleRepositoryTest {
         String roleName = "Test";
         when(roleRepository.getAllRoles()).thenCallRealMethod();
         when(roleRepository.getRoleByName(roleName)).thenCallRealMethod();
-        Role currentRole = roleRepository.getRoleByName(roleName);
+        roleRepository.getRoleByName(roleName);
     }
 }
