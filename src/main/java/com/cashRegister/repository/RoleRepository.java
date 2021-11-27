@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoleRepository {
-    private static final String SELECT_ALL_ROLES = "SELECT * FROM roles;";
+    public static final String SELECT_ALL_ROLES = "SELECT * FROM roles;";
 
     private static RoleRepository roleRepository = null;
 

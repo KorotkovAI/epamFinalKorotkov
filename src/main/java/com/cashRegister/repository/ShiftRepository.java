@@ -129,7 +129,7 @@ public class ShiftRepository {
                 }
             }
         }
-        throw new IllegalAccessException("wrong idShift");
+        throw new IllegalArgumentException("wrong idShift");
     }
 
     public boolean openShift() {

@@ -1,6 +1,5 @@
-package com.cashRegister;
+package com.cashRegister.model;
 
-import com.cashRegister.model.Role;
 import org.junit.Before;
 import org.junit.Test;
 
