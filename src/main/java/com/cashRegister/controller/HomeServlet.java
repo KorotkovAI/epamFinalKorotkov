@@ -33,9 +33,12 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        if (req.getSession().getAttribute("not found user") != null) {
+            req.getSession().removeAttribute("not found user");
+        }
+
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-
         String currentRole;
         String forwardPage = WebAdresses.ERROR_PAGE;
         RequestDispatcher requestDispatcher;
@@ -54,7 +57,7 @@ public class HomeServlet extends HttpServlet {
                 requestDispatcher.forward(req, resp);
             }
         }
-        req.setAttribute("not found user", "User with such login and password not found");
+        req.getSession().setAttribute("not found user", "User with such login and password not found");
         requestDispatcher = req.getRequestDispatcher(WebAdresses.HOME_PAGE);
         requestDispatcher.forward(req, resp);
     }
