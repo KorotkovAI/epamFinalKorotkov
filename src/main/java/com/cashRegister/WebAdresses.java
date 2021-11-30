@@ -21,5 +21,5 @@ public class WebAdresses {
     public static final String OPEN_SHIFT = "/openShift";
     public static final String Z_REPORT = "src/main/webapp/WEB-INF/pages/Zreport.jsp";
     public static final String OPEN_SHIFT_PAGE = "src/main/webapp/WEB-INF/pages/openShift.jsp";
-
+    public static final String CHECK_PAGE = "src/main/webapp/WEB-INF/pages/check.jsp";
 }

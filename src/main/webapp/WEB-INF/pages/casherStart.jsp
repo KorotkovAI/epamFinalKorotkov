@@ -15,13 +15,13 @@
 <body>
 <h2 align="center">Casher Start Page</h2>
 <div align="center">
-<p>Hello <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>
-</b></p>
-<p>Today is <b> <c:out value="${localDate}"/>
-</b></p>
-<p>Open shift is № <b> <c:out value="${openshift.id}"/>
-</b></p>
-<a class="btn btn-primary" href="/checkAdd" role="button">Create new check</a>
+    <p>Hello <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>
+    </b></p>
+    <p>Today is <b> <c:out value="${localDate}"/>
+    </b></p>
+    <p>Open shift is № <b> <c:out value="${openshift.id}"/>
+    </b></p>
+    <a class="btn btn-primary" href="/checkAdd" role="button">Create new check</a>
 </div>
 <h2 align="center">List of Checks today</h2>
 <%
@@ -36,14 +36,13 @@
         <th scope="col">No.</th>
         <th scope="col">CheckTime</th>
         <th scope="col">CheckSum</th>
-        <th scope="col">Operation</th>
+        <th class="text-center" scope="col" colspan="2">Operation</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach items="${checksOfCasher}" var="check">
         <tr>
             <th scope="row">${check.id}
-            </th>
             <td>${check.timestamp}
             </td>
             <td>${check.sum}
@@ -51,6 +50,10 @@
             <td>
                 <a class="btn btn-primary" href="/returnCheck?id=${check.id}" role="button">Return</a>
             </td>
+            <td>
+                <a class="btn btn-primary" href="/checkView?id=${check.id}" role="button">Open</a>
+            </td>
+            </th>
         </tr>
     </c:forEach>
     </tbody>
