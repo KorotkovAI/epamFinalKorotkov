@@ -1,7 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="${language}">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "date" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="text" />
 
 
 <head>
@@ -16,25 +22,26 @@
 </head>
 <body>
 <body>
-<h2 align="center">Comodity expert start page</h2>
+<h2 align="center"><fmt:message key="expertstart.text.pageName"/></h2>
 <div align="center">
-    <p>Hello <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>
+    <p><fmt:message key="expertstart.text.hello"/> <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>
     </b></p>
-    <p>Today is <b> <c:out value="${localDate}"/>
+    <p><fmt:message key="expertstart.text.today"/> <b>
+        ${localDate}
     </b></p>
-    <a class="btn btn-primary" href="/goodsAdd" role="button">Add new position</a>
+    <a class="btn btn-primary" href="/goodsAdd" role="button"><fmt:message key="expertstart.text.addNewPosition"/></a>
 </div>
 
-<h2 align="center">List of Goods</h2>
+<h2 align="center"><fmt:message key="expertstart.text.listOfGoods"/></h2>
 
-<table class="table">
+<table class="table" id="goodsListTable">
     <thead class="thead-dark">
     <tr>
         <th scope="col">No.</th>
-        <th scope="col">Name</th>
-        <th scope="col">Amount</th>
-        <th scope="col">Price</th>
-        <th class="text-center" scope="col" colspan="2">Operation</th>
+        <th scope="col"><fmt:message key="expertstart.text.name"/></th>
+        <th scope="col"><fmt:message key="expertstart.text.amount"/></th>
+        <th scope="col"><fmt:message key="expertstart.text.price"/></th>
+        <th class="text-center" scope="col" colspan="2"><fmt:message key="expertstart.text.operations"/></th>
     </tr>
     </thead>
     <tbody>
@@ -49,10 +56,10 @@
             <td>${goods.getPrice()}
             </td>
             <td>
-                <a class="btn btn-primary" href="/goodsUpdate?id=${goods.getId()}" role="button">Update</a>
+                <a class="btn btn-primary" href="/goodsUpdate?id=${goods.getId()}" role="button"><fmt:message key="expertstart.text.update"/></a>
             </td>
             <td>
-                <a class="btn btn-primary" href="/deleteGoods?goods=${goods.getName()}" role="button">Delete</a>
+                <a class="btn btn-primary" href="/deleteGoods?goods=${goods.getName()}" role="button"><fmt:message key="expertstart.text.delete"/></a>
             </td>
         </tr>
     </c:forEach>

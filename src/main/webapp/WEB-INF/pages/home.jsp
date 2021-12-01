@@ -1,5 +1,12 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="text" />
 <!doctype html>
-<html lang="en">
+<html lang="${language}">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
     <!-- Required meta tags -->
@@ -13,6 +20,14 @@
     <title>Cash Register</title>
 </head>
 <body style="background-color: #508bfc;">
+<!--
+<form>
+    <select id="language" name="language" onchange="submit()">
+        <option value="en" ${language == 'en' ? 'selected' : ''}>English</option>
+        <option value="ru" ${language == 'ru' ? 'selected' : ''}>Russian</option>
+    </select>
+</form>
+-->
 <section class="vh-100" >
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -21,9 +36,9 @@
                     <form action="" method="post">
 
                         <div class="card-body p-5 text-center">
-                            <h3 class="mb-5">Final project</h3>
-                            <h3 class="mb-5">Korotkov Oleksandr</h3>
-                            <h2 class="mb-5">Cash Register</h2>
+                            <h3 class="mb-5"><fmt:message key="login.text.finalProject"/></h3>
+                            <h3 class="mb-5"><fmt:message key="login.text.myFullName"/></h3>
+                            <h2 class="mb-5"><fmt:message key="login.text.projectType"/></h2>
                             <%
                                 String mes = (String) request.getSession().getAttribute("not found user");
                             %>
@@ -32,24 +47,24 @@
                         </h6> </p>
                             <div class="form-outline mb-4">
                                 <tr>
-                                    <td><label for="login">Login: </label></td>
+                                    <td><label for="login"><fmt:message key="login.text.user"/>: </label></td>
                                     <td><input type="text" id="login" name="login" autofocus></td>
                                 </tr>
                             </div>
 
                             <div class="form-outline mb-4">
                                 <tr>
-                                    <td><label for="password">Password: </label></td>
+                                    <td><label for="password"><fmt:message key="login.text.password"/>: </label></td>
                                     <td><input type="password" id="password" name="password" autofocus></td>
                                 </tr>
                             </div>
 
                             <tr>
                                 <td>
-                                    <button class="btn btn-primary btn-lg" type="submit">Login</button>
+                                    <button class="btn btn-primary btn-lg" type="submit"><fmt:message key="login.text.submit"/></button>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary btn-lg" type="reset">Reset</button>
+                                    <button class="btn btn-primary btn-lg" type="reset"><fmt:message key="login.text.reset"/></button>
                                 </td>
                             </tr>
                             <hr class="my-4">
