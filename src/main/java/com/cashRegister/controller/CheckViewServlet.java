@@ -33,15 +33,12 @@ public class CheckViewServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("get in");
         if (req.getParameter("id") != null) {
             int idCurrentCheck = Integer.parseInt(req.getParameter("id"));
-            System.out.println(idCurrentCheck);
             Check currentCheck = checkRepository.getCurrentCheck(idCurrentCheck);
-            System.out.println(currentCheck.toString());
+
             if (currentCheck != null) {
                 List<Goods> goodsList = checkGoodsRepository.returnCheckGoods(idCurrentCheck);
-                goodsList.stream().forEach(System.out::println);
                 req.getSession().setAttribute("goods", goodsList);
                 req.getSession().setAttribute("check", currentCheck);
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CHECK_PAGE);
