@@ -1,7 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="${language}">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="text"/>
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -13,17 +21,17 @@
     <title>Casher Start Page</title>
 </head>
 <body>
-<h2 align="center">Casher Start Page</h2>
+<h2 align="center"><fmt:message key="casherstart.text.casherStartPage"/></h2>
 <div align="center">
-    <p>Hello <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>
+    <p><fmt:message key="expertstart.text.hello"/> <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>
     </b></p>
-    <p>Today is <b> <c:out value="${localDate}"/>
+    <p><fmt:message key="expertstart.text.today"/> <b> <c:out value="${localDate}"/>
     </b></p>
-    <p>Open shift is № <b> <c:out value="${openshift.id}"/>
+    <p><fmt:message key="casherstart.text.openShift"/> № <b> <c:out value="${openshift.id}"/>
     </b></p>
-    <a class="btn btn-primary" href="/checkAdd" role="button">Create new check</a>
+    <a class="btn btn-primary" href="/checkAdd" role="button"><fmt:message key="casherstart.text.createNewCheck"/></a>
 </div>
-<h2 align="center">List of Checks today</h2>
+<h2 align="center"><fmt:message key="casherstart.text.listChecks"/></h2>
 <%
     String mes = (String) request.getSession().getAttribute("check returned");
 %>
@@ -34,9 +42,9 @@
     <thead class="thead-dark">
     <tr>
         <th scope="col">No.</th>
-        <th scope="col">CheckTime</th>
-        <th scope="col">CheckSum</th>
-        <th class="text-center" scope="col" colspan="2">Operation</th>
+        <th scope="col"><fmt:message key="casherstart.text.checkTime"/></th>
+        <th scope="col"><fmt:message key="casherstart.text.checkSum"/></th>
+        <th class="text-center" scope="col" colspan="2"><fmt:message key="expertstart.text.operations"/></th>
     </tr>
     </thead>
     <tbody>
@@ -48,10 +56,10 @@
             <td>${check.sum}
             </td>
             <td>
-                <a class="btn btn-primary" href="/returnCheck?id=${check.id}" role="button">Return</a>
+                <a class="btn btn-primary" href="/returnCheck?id=${check.id}" role="button"><fmt:message key="casherstart.text.return"/></a>
             </td>
             <td>
-                <a class="btn btn-primary" href="/checkView?id=${check.id}" role="button">Open</a>
+                <a class="btn btn-primary" href="/checkView?id=${check.id}" role="button"><fmt:message key="casherstart.text.open"/></a>
             </td>
             </th>
         </tr>
