@@ -49,6 +49,10 @@ public class CasherStartServlet extends HttpServlet {
             req.getSession().setAttribute("checksOfCasher", checkList);
         }
 
+        if (req.getSession().getAttribute("goodsForCheck") != null) {
+            req.getSession().removeAttribute("goodsForCheck");
+        }
+
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_START_FORWARD);
         requestDispatcher.forward(req, resp);
     }

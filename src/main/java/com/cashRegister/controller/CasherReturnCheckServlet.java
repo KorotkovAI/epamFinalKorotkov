@@ -43,7 +43,7 @@ public class CasherReturnCheckServlet extends HttpServlet {
                     List<Goods> goodsForReturn = checkGoodsRepository.returnCheckGoods(idCurrentCheck);
                     boolean res = goodsRepository.returnGoods(goodsForReturn);
                     if (res) {
-                        req.getSession().setAttribute("check returned", "check successfully returned back money for client");
+                        req.getSession().setAttribute("check returned", "check successfully returned. Back money for client");
                         resp.sendRedirect(WebAdresses.CASHER_START_PAGE);
                     }
                 }
