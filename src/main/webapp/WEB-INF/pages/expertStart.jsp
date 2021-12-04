@@ -21,7 +21,6 @@
     <title>Comodity expert start page</title>
 </head>
 <body>
-<body>
 <h2 align="center"><fmt:message key="expertstart.text.pageName"/></h2>
 <div align="center">
     <p><fmt:message key="expertstart.text.hello"/> <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>

@@ -6,7 +6,7 @@
     <title>X report</title>
 </head>
 <body>
-<%@include file="headerAdmin.html" %>
+<%@include file="headerAdmin.jsp" %>
 <h2>X report</h2>
 <p>Open shift №<b> <c:out value="${openShift.id}"/>
 </b></p>

@@ -5,7 +5,7 @@
     <title>Open Shift</title>
 </head>
 <body>
-<%@include file="headerAdmin.html" %>
+<%@include file="headerAdmin.jsp" %>
 <p>Shift №<b> <c:out value="${openShift.id}"/>
 </b></p>
 <p>successfully opened at<b> <c:out value="${openShift.openTime}"/>

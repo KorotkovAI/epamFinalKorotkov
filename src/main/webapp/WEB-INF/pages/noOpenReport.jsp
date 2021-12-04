@@ -4,7 +4,7 @@
     <title>No open Shift</title>
 </head>
 <body>
-<%@include file="headerAdmin.html"%>
+<%@include file="headerAdmin.jsp"%>
 <h1></h1>
 <h3>Sorry there no open Shift now</h3>
 <h1></h1>

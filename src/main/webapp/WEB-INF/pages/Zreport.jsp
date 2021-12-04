@@ -6,7 +6,7 @@
     <title>Z report</title>
 </head>
 <body>
-<%@include file="headerAdmin.html" %>
+<%@include file="headerAdmin.jsp" %>
 <h2>Z report</h2>
 <p>Shift №<b> <c:out value="${closeShift.id}"/>
 </b></p>
