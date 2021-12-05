@@ -92,8 +92,8 @@
 <fmt:message key="xreport.text.sumOfNotReturned"/>: <c:out value="${sumReturned}"/>
 <h2></h2>
 <h2><fmt:message key="zreport.text.toOpenShift"/></h2>
-<a href="/openShift"><input type="button" value="<fmt:message key="zreport.text.yes"/>"></a>
-<a href="/"><input type="button" value="<fmt:message key="zreport.text.no"/>"></a>
+<a href="/openShift" class="btn btn-primary" role="button"><fmt:message key="zreport.text.yes"/></a>
+<a href="/" class="btn btn-primary" role="button"><fmt:message key="zreport.text.no"/></a>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

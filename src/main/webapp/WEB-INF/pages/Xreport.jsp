@@ -88,7 +88,8 @@
 
 <fmt:message key="xreport.text.sumOfNotReturned"/>: <c:out value="${sumReturned}"/>
 <h2></h2>
-<a href="/adminTodayClose"><input type="button" value="<fmt:message key="xreport.text.makeZ"/>"></a>
+<a href="/adminTodayClose" class="btn btn-primary" role="button"><fmt:message key="xreport.text.makeZ"/></a>
+
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
