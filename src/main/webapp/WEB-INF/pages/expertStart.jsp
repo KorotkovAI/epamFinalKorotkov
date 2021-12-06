@@ -2,12 +2,13 @@
 <html lang="${language}">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix = "date" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<c:set var="language" value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}" scope="session" />
-<fmt:setLocale value="${language}" />
-<fmt:setBundle basename="text" />
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language"
+       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
+       scope="session"/>
+<fmt:setLocale value="${language}"/>
+<fmt:setBundle basename="text"/>
 
 
 <head>
@@ -23,7 +24,8 @@
 <body>
 <h2 align="center"><fmt:message key="expertstart.text.pageName"/></h2>
 <div align="center">
-    <p><fmt:message key="expertstart.text.hello"/> <b><c:out value="${user.getName()} "/> <c:out value="${user.getSurname()}"/>
+    <p><fmt:message key="expertstart.text.hello"/> <b><c:out value="${user.getName()} "/> <c:out
+            value="${user.getSurname()}"/>
     </b></p>
     <p><fmt:message key="expertstart.text.today"/> <b>
         ${localDate}
@@ -55,10 +57,12 @@
             <td>${goods.getPrice()}
             </td>
             <td>
-                <a class="btn btn-primary" href="/goodsUpdate?id=${goods.getId()}" role="button"><fmt:message key="expertstart.text.update"/></a>
+                <a class="btn btn-primary" href="/goodsUpdate?id=${goods.getId()}" role="button"><fmt:message
+                        key="expertstart.text.update"/></a>
             </td>
             <td>
-                <a class="btn btn-primary" href="/deleteGoods?goods=${goods.getName()}" role="button"><fmt:message key="expertstart.text.delete"/></a>
+                <a class="btn btn-primary" href="/deleteGoods?goods=${goods.getName()}" role="button"><fmt:message
+                        key="expertstart.text.delete"/></a>
             </td>
         </tr>
     </c:forEach>
