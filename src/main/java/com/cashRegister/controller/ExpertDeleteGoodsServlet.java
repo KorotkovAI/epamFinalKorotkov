@@ -36,11 +36,12 @@ public class ExpertDeleteGoodsServlet extends HttpServlet {
 
         RequestDispatcher requestDispatcher;
         if (isDeletedGoods) {
-            requestDispatcher = req.getRequestDispatcher("/expertStart");
+            resp.sendRedirect("/expertStart");
         } else {
             requestDispatcher = req.getRequestDispatcher(WebAdresses.ERROR_PAGE);
+            requestDispatcher.forward(req, resp);
         }
-        requestDispatcher.forward(req, resp);
+
 
     }
 

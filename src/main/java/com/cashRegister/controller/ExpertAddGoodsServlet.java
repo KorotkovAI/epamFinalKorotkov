@@ -59,8 +59,7 @@ public class ExpertAddGoodsServlet extends HttpServlet {
         boolean isAdd = goodsRepository.addGoods(goods);
 
         if (isAdd) {
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
-            requestDispatcher.forward(req, resp);
+            resp.sendRedirect("/expertStart");
         } else {
             req.getSession().setAttribute("not save goods", "Can't use this name");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_ADD);

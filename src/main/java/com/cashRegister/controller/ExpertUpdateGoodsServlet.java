@@ -71,8 +71,7 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
             try {
                 boolean updateComplite = goodsRepository.update(newGoods);
                 if (updateComplite) {
-                    RequestDispatcher requestDispatcher = req.getRequestDispatcher("/expertStart");
-                    requestDispatcher.forward(req, resp);
+                    resp.sendRedirect("/expertStart");
                 } else {
                     req.getSession().setAttribute("notFoundGoods", "Sorry something wrong with goods");
                     RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);

@@ -42,23 +42,31 @@ public class HomeServlet extends HttpServlet {
         String currentRole;
         String forwardPage = WebAdresses.ERROR_PAGE;
         RequestDispatcher requestDispatcher;
+        boolean flag = true;
         for (User user : userRepository.getAllUsers()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 currentRole = user.getRoleName().getName();
+                req.getSession().setAttribute("user", user);
+                flag = false;
                 if (currentRole.equals("Admin")) {
                     forwardPage = WebAdresses.ADMIN_START_PAGE;
+                    requestDispatcher = req.getRequestDispatcher(forwardPage);
+                    requestDispatcher.forward(req, resp);
                 } else if (currentRole.equals("Casher")) {
                     forwardPage = WebAdresses.CASHER_START_PAGE;
+                    requestDispatcher = req.getRequestDispatcher(forwardPage);
+                    requestDispatcher.forward(req, resp);
                 } else if (currentRole.equals("CommodityExpert")) {
                     forwardPage = "/expertStart";
+                    resp.sendRedirect(forwardPage);
                 }
-                req.getSession().setAttribute("user", user);
-                requestDispatcher = req.getRequestDispatcher(forwardPage);
-                requestDispatcher.forward(req, resp);
             }
         }
-        req.getSession().setAttribute("not found user", "User with such login and password not found");
-        requestDispatcher = req.getRequestDispatcher(WebAdresses.HOME_PAGE);
-        requestDispatcher.forward(req, resp);
+
+        if (flag) {
+            req.getSession().setAttribute("not found user", "User with such login and password not found");
+            requestDispatcher = req.getRequestDispatcher(WebAdresses.HOME_PAGE);
+            requestDispatcher.forward(req, resp);
+        }
     }
 }
