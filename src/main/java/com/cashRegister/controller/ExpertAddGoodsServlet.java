@@ -34,6 +34,8 @@ public class ExpertAddGoodsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+
         String newGoodsName = null;
         int newGoodsAmount = -1;
         double newGoodsPrice = -2.0;

@@ -19,7 +19,7 @@
             <div class="navbar-nav">
                 <a class="nav-link" href="/adminTodayChecks"><fmt:message key="header.text.xReport"/></a>
                 <a class="nav-link" href="/adminTodayClose"><fmt:message key="header.text.zReport"/></a>
-                <a class="nav-link" href="/tasks-list"><fmt:message key="header.text.users"/></a>
+                <a class="nav-link" href="/users"><fmt:message key="header.text.users"/></a>
             </div>
         </div>
     </div>
