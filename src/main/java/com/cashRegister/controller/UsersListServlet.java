@@ -1,7 +1,6 @@
 package com.cashRegister.controller;
 
 import com.cashRegister.WebAdresses;
-import com.cashRegister.model.Goods;
 import com.cashRegister.model.User;
 import com.cashRegister.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 @WebServlet("/users")
@@ -49,6 +47,9 @@ public class UsersListServlet extends HttpServlet {
         req.getSession().setAttribute("noOfPages", noOfPages);
         req.getSession().setAttribute("currentPage", page);
         req.getSession().setAttribute("usersList", result);
+        if (req.getSession().getAttribute("not save user") != null) {
+            req.getSession().removeAttribute("not save user");
+        }
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.USERS_LIST);
         requestDispatcher.forward(req, resp);
     }

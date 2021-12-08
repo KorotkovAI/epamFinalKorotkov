@@ -1,6 +1,7 @@
 package com.cashRegister.repository;
 
 import com.cashRegister.DbManager;
+import com.cashRegister.model.Goods;
 import com.cashRegister.model.Role;
 import com.cashRegister.model.User;
 import org.apache.logging.log4j.Level;
@@ -14,7 +15,7 @@ import java.util.List;
 public class UserRepository {
 
     private static final String INSERT_USER = "INSERT INTO users" +
-            " (login, password, name, surname, roleName) VALUES " + " (?, ?, ?);";
+            " (login, password, name, surname, roleName) VALUES " + " (?, ?, ?, ?, ?);";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users;";
 
     private static final Logger log = LogManager.getLogger(UserRepository.class);
@@ -67,5 +68,38 @@ public class UserRepository {
     public User getCurrentUser(int userId) {
         List<User> users = getAllUsers();
         return users.stream().filter(x -> x.getId() == userId).findFirst().orElse(null);
+    }
+
+    public boolean addUser(User user) {
+        if (user != null) {
+            List<User> userList = getAllUsers();
+            boolean status = userList.stream().anyMatch(x -> x.getLogin().equals(user.getLogin()));
+
+            if (!status) {
+                Connection connection = null;
+                PreparedStatement preparedStatement = null;
+
+                try {
+                    connection = DbManager.getInstance().getConnection();
+                    preparedStatement = connection.prepareStatement(INSERT_USER);
+                    preparedStatement.setString(1, user.getLogin());
+                    preparedStatement.setString(2, user.getPassword());
+                    preparedStatement.setString(3, user.getName());
+                    preparedStatement.setString(4, user.getSurname());
+                    preparedStatement.setString(5, user.getRoleName().getName());
+                    preparedStatement.executeUpdate();
+                    return true;
+                } catch (SQLException e) {
+                    log.log(Level.ERROR, e);
+                } finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        log.log(Level.ERROR, e);
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

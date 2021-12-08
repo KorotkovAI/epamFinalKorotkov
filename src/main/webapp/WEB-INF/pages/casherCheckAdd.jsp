@@ -49,7 +49,6 @@
                                         </option>
                                     </c:forEach>
                                 </select></td>
-                                </tr>
                                 <tr>
                                     <td><fmt:message key="expertstart.text.amount"/>:</td>
                                     <td><input type="number" name="amountPos"></td>

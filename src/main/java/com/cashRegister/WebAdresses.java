@@ -23,5 +23,6 @@ public class WebAdresses {
     public static final String OPEN_SHIFT_PAGE = "src/main/webapp/WEB-INF/pages/openShift.jsp";
     public static final String CHECK_PAGE = "src/main/webapp/WEB-INF/pages/check.jsp";
     public static final String USERS_LIST = "src/main/webapp/WEB-INF/pages/usersList.jsp";
+    public static final String USER_ADD = "src/main/webapp/WEB-INF/pages/addUser.jsp";
 
 }
