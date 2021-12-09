@@ -1,6 +1,7 @@
 package com.cashRegister.repository;
 
 import com.cashRegister.DbManager;
+import com.cashRegister.exception.GoodsNotFoundException;
 import com.cashRegister.model.Goods;
 import com.cashRegister.model.Role;
 import com.cashRegister.model.User;
@@ -17,6 +18,7 @@ public class UserRepository {
     private static final String INSERT_USER = "INSERT INTO users" +
             " (login, password, name, surname, roleName) VALUES " + " (?, ?, ?, ?, ?);";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users;";
+    private static final String UPDATE_USER = "UPDATE users SET login = ?, password = ?, name = ?, surname = ?, roleName = ? WHERE id = ?;";
 
     private static final Logger log = LogManager.getLogger(UserRepository.class);
 
@@ -97,6 +99,42 @@ public class UserRepository {
                     } catch (SQLException e) {
                         log.log(Level.ERROR, e);
                     }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean update(User user) {
+        List<User> userList = getAllUsers();
+        User updateUser = userList.stream().filter(x -> x.getId() == user.getId()).findFirst().orElse(null);
+
+        if (updateUser != null) {
+            if (updateUser.equals(user)) {
+                log.log(Level.ERROR, "equals users");
+                return false;
+            }
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+
+            try {
+                connection = DbManager.getInstance().getConnection();
+                preparedStatement = connection.prepareStatement(UPDATE_USER);
+                preparedStatement.setString(1, user.getLogin());
+                preparedStatement.setString(2, user.getPassword());
+                preparedStatement.setString(3, user.getName());
+                preparedStatement.setString(4, user.getSurname());
+                preparedStatement.setString(5, user.getRoleName().getName());
+                preparedStatement.setInt(6, user.getId());
+                preparedStatement.executeUpdate();
+                return true;
+            } catch (SQLException e) {
+                log.log(Level.ERROR, e);
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    log.log(Level.ERROR, e);
                 }
             }
         }

@@ -54,7 +54,7 @@
             <td>${user.getRoleName().getName()}
             </td>
             <td>
-                <a class="btn btn-primary" href="/goodsUpdate?id=${goods.getId()}" role="button"><fmt:message
+                <a class="btn btn-primary" href="/userUpdate?id=${user.getId()}" role="button"><fmt:message
                         key="expertstart.text.update"/></a>
             </td>
             <td>

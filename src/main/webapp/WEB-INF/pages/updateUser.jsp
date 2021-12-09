@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="language"
        value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
@@ -17,7 +17,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Goods Add</title>
+    <title>User Update</title>
 </head>
 <body style="background-color: #508bfc;">
 <section class="vh-100">
@@ -26,56 +26,64 @@
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                 <div class="card shadow-2-strong" style="border-radius: 1rem;">
                     <form action="" method="post">
-
                         <div class="card-body p-5 text-center">
                             <h2><fmt:message key="userlist.text.addUser"/></h2>
                             <a class="btn btn-primary" href="/users" role="button"><fmt:message
                                     key="goodsadd.text.backtolist"/></a>
-
-                            <%
-                                String mes = (String) request.getSession().getAttribute("not save user");
-
-                            %>
-                            <p><h6 style="color: red;"><%=mes != null ? mes : ""%></h6> </p>
-                            <div class="form-outline mb-4">
-                                <tr>
-                                    <td><label for="login"><fmt:message key="userlist.text.login"/>: </label></td>
-                                    <td><input type="text" id="login" name="login" autofocus></td>
-                                </tr>
-                            </div>
+                            <h4></h4>
+                            <b style="color: red;"><c:out value="${wrongMining}"/></b>
+                            <b style="color: red;"><c:out value="${notFoundUser}"/></b>
 
                             <div class="form-outline mb-4">
                                 <tr>
-                                    <td><label for="name"><fmt:message key="userlist.text.name"/>: </label></td>
-                                    <td><input type="text" id="name" name="name" autofocus></td>
+                                    <td><label for="idUser">Id: </label></td>
+                                    <td><input type="text" id="idUser" name="idUser" readonly="readonly"
+                                               value="${userForUpdate.getId()}"></td>
                                 </tr>
                             </div>
                             <div class="form-outline mb-4">
                                 <tr>
-                                    <td><label for="surname"><fmt:message key="userlist.text.surname"/>: </label></td>
-                                    <td><input type="text" id="surname" name="surname" autofocus></td>
+                                    <td><label for="loginUser"><fmt:message key="userlist.text.login"/>: </label></td>
+                                    <td><input type="text" id="loginUser" value="${userForUpdate.getLogin()}"
+                                               name="loginUser"></td>
                                 </tr>
                             </div>
                             <div class="form-outline mb-4">
                                 <tr>
-                                    <td><label for="password"><fmt:message key="login.text.password"/>: </label></td>
-                                    <td><input type="password" id="password" name="password" autofocus></td>
+                                    <td><label for="nameUser"><fmt:message key="userlist.text.name"/>: </label></td>
+                                    <td><input type="text" id="nameUser" value="${userForUpdate.getName()}"
+                                               name="nameUser"></td>
+                                </tr>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <tr>
+                                    <td><label for="surnameUser"><fmt:message key="userlist.text.surname"/>: </label>
+                                    </td>
+                                    <td><input type="text" id="surnameUser" value="${userForUpdate.getSurname()}"
+                                               name="surnameUser"></td>
+                                </tr>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <tr>
+                                    <td><label for="passUser"><fmt:message key="login.text.password"/>: </label></td>
+                                    <td><input type="password" id="passUser" value="${userForUpdate.getPassword()}"
+                                               name="passUser"></td>
                                 </tr>
                             </div>
                             <div class="form-outline mb-4">
                                 <td><fmt:message key="userlist.text.role"/>:</td>
                                 <td><select name="role">
-                                <c:forEach items="${roles}" var="role">
-                                    <option value="${role.name}"> ${role.name}
-                                    </option>
-                                </c:forEach>
-                            </select></td>
+                                    <c:forEach items="${roles}" var="role">
+                                        <option selected="${role.name.equals(userForUpdate.getRoleName().getName())}">
+                                                ${role.name}
+                                        </option>
+                                    </c:forEach>
+                                </select></td>
                             </div>
-
                             <tr>
                                 <td>
                                     <button class="btn btn-primary btn-lg" type="submit"><fmt:message
-                                            key="goodsadd.text.add"/></button>
+                                            key="expertstart.text.update"/></button>
                                 </td>
                                 <td>
                                     <button class="btn btn-primary btn-lg" type="reset"><fmt:message
@@ -100,7 +108,8 @@
         crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
 
+</script>
 </body>
 </html>

@@ -24,5 +24,6 @@ public class WebAdresses {
     public static final String CHECK_PAGE = "src/main/webapp/WEB-INF/pages/check.jsp";
     public static final String USERS_LIST = "src/main/webapp/WEB-INF/pages/usersList.jsp";
     public static final String USER_ADD = "src/main/webapp/WEB-INF/pages/addUser.jsp";
+    public static final String USER_UPDATE = "src/main/webapp/WEB-INF/pages/updateUser.jsp";
 
 }
