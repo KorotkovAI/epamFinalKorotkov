@@ -58,7 +58,7 @@
                         key="expertstart.text.update"/></a>
             </td>
             <td>
-                <a class="btn btn-primary" href="/deleteGoods?goods=${goods.getName()}" role="button"><fmt:message
+                <a class="btn btn-primary" href="/deleteUser?id=${user.getId()}" role="button"><fmt:message
                         key="expertstart.text.delete"/></a>
             </td>
         </tr>

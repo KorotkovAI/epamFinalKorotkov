@@ -18,6 +18,7 @@ public class UserRepository {
     private static final String INSERT_USER = "INSERT INTO users" +
             " (login, password, name, surname, roleName) VALUES " + " (?, ?, ?, ?, ?);";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users;";
+    private static final String DELETE_USER = "DELETE FROM users WHERE id = ?;";
     private static final String UPDATE_USER = "UPDATE users SET login = ?, password = ?, name = ?, surname = ?, roleName = ? WHERE id = ?;";
 
     private static final Logger log = LogManager.getLogger(UserRepository.class);
@@ -137,6 +138,27 @@ public class UserRepository {
                     log.log(Level.ERROR, e);
                 }
             }
+        }
+        return false;
+    }
+
+    public boolean deleteById(int id) {
+        List<User> userList = userRepository.getAllUsers();
+        User oldUser = userList.stream().filter(x -> x.getId() == id).findFirst().get();
+
+        if (oldUser != null) {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+
+            try {
+                connection = DbManager.getInstance().getConnection();
+                preparedStatement = connection.prepareStatement(DELETE_USER);
+                preparedStatement.setInt(1, oldUser.getId());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                log.log(Level.ERROR, e);
+            }
+            return true;
         }
         return false;
     }
