@@ -3,6 +3,7 @@ package com.cashRegister.controller;
 import com.cashRegister.WebAdresses;
 import com.cashRegister.model.Goods;
 import com.cashRegister.repository.GoodsRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,6 +39,7 @@ public class ExpertDeleteGoodsServlet extends HttpServlet {
         if (isDeletedGoods) {
             resp.sendRedirect("/expertStart");
         } else {
+            log.log(Level.ERROR, "goods not deleted" + ExpertDeleteGoodsServlet.class.getName());
             requestDispatcher = req.getRequestDispatcher(WebAdresses.ERROR_PAGE);
             requestDispatcher.forward(req, resp);
         }

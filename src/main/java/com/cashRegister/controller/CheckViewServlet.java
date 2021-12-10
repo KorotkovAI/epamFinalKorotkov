@@ -44,11 +44,11 @@ public class CheckViewServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CHECK_PAGE);
                 requestDispatcher.forward(req, resp);
             } else {
-                log.log(Level.ERROR, "did not find check by id");
+                log.log(Level.ERROR, "did not find check by id" + CheckViewServlet.class.getName());
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
         } else {
-            log.log(Level.ERROR, "did not get param id");
+            log.log(Level.ERROR, "did not get param id" + CheckViewServlet.class.getName());
             resp.sendRedirect(WebAdresses.ERROR_PAGE);
         }
     }

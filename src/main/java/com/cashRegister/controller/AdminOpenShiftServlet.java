@@ -3,6 +3,7 @@ package com.cashRegister.controller;
 import com.cashRegister.WebAdresses;
 import com.cashRegister.model.Shift;
 import com.cashRegister.repository.ShiftRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,6 +31,7 @@ public class AdminOpenShiftServlet extends HttpServlet {
         Shift openShift = shiftRepository.firstOpenShift();
 
         if (openShift != null) {
+            log.log(Level.ERROR, "trying to use shift without opening");
             resp.sendRedirect(WebAdresses.ERROR_PAGE);
         } else {
             boolean status = shiftRepository.openShift();
@@ -40,6 +42,7 @@ public class AdminOpenShiftServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.OPEN_SHIFT_PAGE);
                 requestDispatcher.forward(req, resp);
             } else {
+                log.log(Level.ERROR, "shift wasn't opened");
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
         }

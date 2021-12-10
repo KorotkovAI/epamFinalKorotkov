@@ -3,6 +3,7 @@ package com.cashRegister.controller;
 import com.cashRegister.WebAdresses;
 import com.cashRegister.model.User;
 import com.cashRegister.repository.UserRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,6 +38,7 @@ public class AdminDeleteUserServlet extends HttpServlet {
         if (isDeletedGoods) {
             resp.sendRedirect("/users");
         } else {
+            log.log(Level.ERROR, "problems with deleting user" + currentUserId);
             requestDispatcher = req.getRequestDispatcher(WebAdresses.ERROR_PAGE);
             requestDispatcher.forward(req, resp);
         }

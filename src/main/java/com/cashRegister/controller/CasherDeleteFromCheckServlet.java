@@ -43,7 +43,7 @@ public class CasherDeleteFromCheckServlet extends HttpServlet {
                 resp.sendRedirect(WebAdresses.CASHER_CHECK_RESULT_SERVLET);
             }
         } catch (NumberFormatException e) {
-            log.log(Level.ERROR, e);
+            log.log(Level.ERROR, e.getMessage() + CasherDeleteFromCheckServlet.class.getName());
         }
     }
 }

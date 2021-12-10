@@ -7,6 +7,7 @@ import com.cashRegister.model.User;
 import com.cashRegister.repository.CheckRepository;
 import com.cashRegister.repository.ShiftRepository;
 import com.cashRegister.repository.UserRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,6 +40,7 @@ public class AdminTodayChecksServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (shiftRepository.firstOpenShift() == null) {
+            log.log(Level.ERROR, "there is no open shift" + AdminTodayChecksServlet.class.getName());
             resp.sendRedirect(WebAdresses.NO_OPEN_REPORT);
         } else {
             Shift openShift = shiftRepository.firstOpenShift();
@@ -51,23 +53,23 @@ public class AdminTodayChecksServlet extends HttpServlet {
             Map<User, List<Check>> mapNotReturned = new HashMap<>();
             Map<User, List<Check>> mapReturned = new HashMap<>();
 
-            Double sumNotReturned = 0.0;
-            Double sumReturned = 0.0;
+            double sumNotReturned = 0.0;
+            double sumReturned = 0.0;
 
             for (User user : usersList) {
                 if (user.getRoleName().getName().equals("Casher")) {
                     List<Check> currentCasherChecksNotReturned = checkRepository.getAllChecksCurrentCasherOpenShift(user).
                             stream().filter(x -> !x.isReturned()).collect(Collectors.toList());
                     List<Check> currentCasherChecksReturned = checkRepository.getAllChecksCurrentCasherOpenShift(user).
-                            stream().filter(x -> x.isReturned()).collect(Collectors.toList());
+                            stream().filter(Check::isReturned).collect(Collectors.toList());
 
                     if (currentCasherChecksNotReturned != null && !currentCasherChecksNotReturned.isEmpty()) {
-                        sumNotReturned += currentCasherChecksNotReturned.stream().map(x -> x.getSum()).reduce(Double::sum).get();
+                        sumNotReturned += currentCasherChecksNotReturned.stream().map(Check::getSum).reduce(Double::sum).get();
                         mapNotReturned.put(user, currentCasherChecksNotReturned);
 
                     }
                     if (currentCasherChecksReturned != null && !currentCasherChecksReturned.isEmpty()) {
-                        sumReturned += currentCasherChecksReturned.stream().map(x -> x.getSum()).reduce(Double::sum).get();
+                        sumReturned += currentCasherChecksReturned.stream().map(Check::getSum).reduce(Double::sum).get();
                         mapReturned.put(user, currentCasherChecksReturned);
                     }
 

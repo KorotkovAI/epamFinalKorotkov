@@ -63,7 +63,7 @@ public class AdminUserAddServlet extends HttpServlet {
             newUserPassword = req.getParameter("password").trim();
             roleName = req.getParameter("role").trim();
         } catch (Exception e) {
-            log.log(Level.ERROR, e);
+            log.log(Level.ERROR, e.getMessage() + AdminUserAddServlet.class.getName());
             req.getSession().setAttribute("not save user", "Sorry some problems with saving");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.USER_ADD);
             requestDispatcher.forward(req, resp);

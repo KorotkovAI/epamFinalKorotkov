@@ -24,7 +24,6 @@ public class AdminUpdateUserServlet extends HttpServlet {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private User user;
 
     private static final Logger log = LogManager.getLogger(AdminUpdateUserServlet.class);
 
@@ -36,7 +35,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int userId = Integer.parseInt(req.getParameter("id"));
-        user = userRepository.getCurrentUser(userId);
+        User user = userRepository.getCurrentUser(userId);
         req.getSession().setAttribute("userForUpdate", user);
         List<Role> roles = roleRepository.getAllRoles();
         req.getSession().setAttribute("roles", roles);
@@ -61,7 +60,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
             password = req.getParameter("passUser");
             role = req.getParameter("role");
         } catch (NumberFormatException e) {
-            log.log(Level.ERROR, e);
+            log.log(Level.ERROR, e.getMessage() + AdminUpdateUserServlet.class.getName());
             req.getSession().setAttribute("wrongMining", "Sorry you use not correct value");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.USER_UPDATE);
             requestDispatcher.forward(req, resp);
@@ -76,7 +75,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
             try {
                 roleUser = roleRepository.getRoleByName(role);
             } catch (RoleNotFoundException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e.getMessage() + AdminTodayCloseServlet.class.getName());
             }
             User newUser = new User(userId, login, password, name, surname, roleUser);
 
@@ -90,7 +89,7 @@ public class AdminUpdateUserServlet extends HttpServlet {
                     requestDispatcher.forward(req, resp);
                 }
             } catch (Exception e) {
-                log.log(Level.ERROR, e);
+                log.log(Level.ERROR, e.getMessage() + AdminTodayCloseServlet.class.getName());
             }
         }
     }

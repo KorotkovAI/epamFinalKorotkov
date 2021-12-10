@@ -49,18 +49,24 @@ public class HomeServlet extends HttpServlet {
                 currentRole = user.getRoleName().getName();
                 req.getSession().setAttribute("user", user);
                 flag = false;
-                if (currentRole.equals("Admin")) {
-                    forwardPage = WebAdresses.ADMIN_START_PAGE;
-                    requestDispatcher = req.getRequestDispatcher(forwardPage);
-                    requestDispatcher.forward(req, resp);
-                } else if (currentRole.equals("Casher")) {
-                    forwardPage = WebAdresses.CASHER_START_PAGE;
-                    requestDispatcher = req.getRequestDispatcher(forwardPage);
-                    requestDispatcher.forward(req, resp);
-                } else if (currentRole.equals("CommodityExpert")) {
-                    forwardPage = "/expertStart";
-                    resp.sendRedirect(forwardPage);
+
+                switch (currentRole) {
+                    case "Admin":
+                        forwardPage = WebAdresses.ADMIN_START_PAGE;
+                        break;
+                    case "Casher":
+                        forwardPage = WebAdresses.CASHER_START_PAGE;
+                        break;
+                    case "CommodityExpert":
+                        forwardPage = "/expertStart";
+                        break;
+                    default:
+                        log.log(Level.ERROR, "can't find such role" + HomeServlet.class.getName());
+                        break;
                 }
+
+                requestDispatcher = req.getRequestDispatcher(forwardPage);
+                requestDispatcher.forward(req, resp);
             }
         }
 

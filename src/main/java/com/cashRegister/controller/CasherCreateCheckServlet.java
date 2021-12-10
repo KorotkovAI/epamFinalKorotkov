@@ -48,7 +48,7 @@ public class CasherCreateCheckServlet extends HttpServlet {
                 idCreatedCheck = checkRepository.createCheck(goodsCheck, currentShift, currentUser);
                 req.getSession().removeAttribute("goodsForCheck");
             } else {
-                log.log(Level.ERROR, "into method come empty goodsCheck");
+                log.log(Level.ERROR, "into method come empty goodsCheck" + CasherCreateCheckServlet.class.getName());
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
 
@@ -56,7 +56,7 @@ public class CasherCreateCheckServlet extends HttpServlet {
             if (idCreatedCheck > 0) {
                 addgoods = checkGoodsRepository.addCheckGoodsList(goodsCheck, idCreatedCheck);
             } else {
-                log.log(Level.ERROR, "check did not created");
+                log.log(Level.ERROR, "check did not created" + CasherCreateCheckServlet.class.getName());
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
 
@@ -71,7 +71,7 @@ public class CasherCreateCheckServlet extends HttpServlet {
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_START_PAGE);
                 requestDispatcher.forward(req, resp);
             } else {
-                log.log(Level.ERROR, "something going wrong with check or goods");
+                log.log(Level.ERROR, "something going wrong with check or goods" + CasherCreateCheckServlet.class.getName());
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
         }

@@ -45,7 +45,7 @@ public class ExpertAddGoodsServlet extends HttpServlet {
             newGoodsAmount = Integer.parseInt(req.getParameter("amountGoods"));
             newGoodsPrice = Double.parseDouble(req.getParameter("priceGoods"));
         } catch (Exception e) {
-            log.log(Level.ERROR, e);
+            log.log(Level.ERROR, e.getMessage() + ExpertAddGoodsServlet.class.getName());
             req.getSession().setAttribute("not save goods", "Can't use this mining");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_ADD);
             requestDispatcher.forward(req, resp);

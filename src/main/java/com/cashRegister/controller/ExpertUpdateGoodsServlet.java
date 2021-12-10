@@ -34,7 +34,7 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
             int goodsId = Integer.parseInt(req.getParameter("id"));
             goods = GoodsRepository.getGoodsRepository().getGoodsById(goodsId);
         } catch (GoodsNotFoundException e) {
-            log.log(Level.ERROR, e);
+            log.log(Level.ERROR, e.getMessage() + ExpertUpdateGoodsServlet.class.getName());
         }
         req.getSession().setAttribute("goodsForUpdate", goods);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
@@ -54,7 +54,7 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
             newGoodsAmount = Integer.parseInt(req.getParameter("amountGoods"));
             newGoodsPrice = Double.parseDouble(req.getParameter("priceGoods"));
         } catch (NumberFormatException e) {
-            log.log(Level.ERROR, e);
+            log.log(Level.ERROR, e.getMessage() + ExpertUpdateGoodsServlet.class.getName());
             req.getSession().setAttribute("wrongMining", "Sorry you use not correct value");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.EXPERT_GOODS_UPDATE_PAGE);
             requestDispatcher.forward(req, resp);
@@ -78,7 +78,7 @@ public class ExpertUpdateGoodsServlet extends HttpServlet {
                     requestDispatcher.forward(req, resp);
                 }
             } catch (GoodsNotFoundException e) {
-                log.log(Level.ERROR, e);
+                log.log(Level.ERROR, e.getMessage() + ExpertUpdateGoodsServlet.class.getName());
             }
         }
     }

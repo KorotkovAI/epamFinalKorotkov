@@ -52,7 +52,7 @@ public class CasherReturnCheckServlet extends HttpServlet {
                 resp.sendRedirect(WebAdresses.CASHER_START_PAGE);
             }
         } else {
-            log.log(Level.ERROR, "did not get ID in param");
+            log.log(Level.ERROR, "did not get ID in param" + CasherReturnCheckServlet.class.getName());
             resp.sendRedirect(WebAdresses.ERROR_PAGE);
         }
     }

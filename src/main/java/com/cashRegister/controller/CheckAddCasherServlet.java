@@ -48,7 +48,7 @@ public class CheckAddCasherServlet extends HttpServlet {
             newPosName = req.getParameter("namePos");
             newPosAmount = Integer.parseInt(req.getParameter("amountPos"));
         } catch (Exception e) {
-            log.log(Level.ERROR, e);
+            log.log(Level.ERROR, e.getMessage() + CheckAddCasherServlet.class.getName());
             req.getSession().setAttribute("not availible params", "Can't use this mining");
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
             requestDispatcher.forward(req, resp);
@@ -64,11 +64,11 @@ public class CheckAddCasherServlet extends HttpServlet {
             try {
                 currentGoods = goodsRepository.getGoodsByName(newPosName);
             } catch (GoodsNotFoundException e) {
-                log.log(Level.ERROR, e);
+                log.log(Level.ERROR, e.getMessage() + CheckAddCasherServlet.class.getName());
 
             }
 
-            if (newPosAmount > currentGoods.getAmount()) {
+            if (currentGoods != null && newPosAmount > currentGoods.getAmount()) {
                 req.getSession().setAttribute("not availible params", "There is not enough goods in the store");
                 RequestDispatcher requestDispatcher = req.getRequestDispatcher(WebAdresses.CASHER_CHECK_ADD);
                 requestDispatcher.forward(req, resp);

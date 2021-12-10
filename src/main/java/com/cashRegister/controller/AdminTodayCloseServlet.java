@@ -45,8 +45,8 @@ public class AdminTodayCloseServlet extends HttpServlet {
         Shift openShift = shiftRepository.firstOpenShift();
 
         if (openShift == null) {
+            log.log(Level.ERROR, "There is no open report" + AdminTodayCloseServlet.class.getName());
             resp.sendRedirect(WebAdresses.NO_OPEN_REPORT);
-            log.log(Level.ERROR, "There is no open report");
         } else {
             List<User> usersList = userRepository.getAllUsers();
             Map<User, List<Check>> mapNotReturned = new HashMap<>();
@@ -59,15 +59,15 @@ public class AdminTodayCloseServlet extends HttpServlet {
                     List<Check> currentCasherChecksNotReturned = checkRepository.getAllChecksCurrentCasherOpenShift(user).
                             stream().filter(x -> !x.isReturned()).collect(Collectors.toList());
                     List<Check> currentCasherChecksReturned = checkRepository.getAllChecksCurrentCasherOpenShift(user).
-                            stream().filter(x -> x.isReturned()).collect(Collectors.toList());
+                            stream().filter(Check::isReturned).collect(Collectors.toList());
 
                     if (!currentCasherChecksNotReturned.isEmpty()) {
-                        sumNotReturned += currentCasherChecksNotReturned.stream().map(x -> x.getSum()).reduce(Double::sum).get();
+                        sumNotReturned += currentCasherChecksNotReturned.stream().map(Check::getSum).reduce(Double::sum).get();
                         mapNotReturned.put(user, currentCasherChecksNotReturned);
 
                     }
                     if (!currentCasherChecksReturned.isEmpty()) {
-                        sumReturned += currentCasherChecksReturned.stream().map(x -> x.getSum()).reduce(Double::sum).get();
+                        sumReturned += currentCasherChecksReturned.stream().map(Check::getSum).reduce(Double::sum).get();
                         mapReturned.put(user, currentCasherChecksReturned);
                     }
 
@@ -88,7 +88,7 @@ public class AdminTodayCloseServlet extends HttpServlet {
             try {
                 status = shiftRepository.closeShift(openShift.getId());
             } catch (IllegalAccessException | ShiftNotFoundException e) {
-                e.printStackTrace();
+                log.log(Level.ERROR, e.getMessage() + AdminTodayCloseServlet.class.getName());
             }
 
             if (status) {
@@ -97,10 +97,11 @@ public class AdminTodayCloseServlet extends HttpServlet {
                     req.getSession().setAttribute("closeShift", closeShift);
                     req.getSession().removeAttribute("openShift");
                 } catch (ShiftNotFoundException e) {
-                    log.printf(Level.ERROR, "Shift not found");
+                    log.printf(Level.ERROR, "Shift not found" + e.getMessage() + AdminTodayCloseServlet.class.getName());
                 }
                 resp.sendRedirect(WebAdresses.Z_REPORT);
             } else {
+                log.log(Level.ERROR, "Can't close shift" + AdminTodayCloseServlet.class.getName());
                 resp.sendRedirect(WebAdresses.ERROR_PAGE);
             }
 
