@@ -3,6 +3,7 @@ package com.cashRegister.controller;
 import com.cashRegister.model.User;
 import com.cashRegister.WebAdresses;
 import com.cashRegister.repository.UserRepository;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
