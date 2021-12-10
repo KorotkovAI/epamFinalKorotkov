@@ -18,6 +18,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class is responsible for check add
+ */
 @WebServlet("/checkAdd")
 public class CheckAddCasherServlet extends HttpServlet {
 

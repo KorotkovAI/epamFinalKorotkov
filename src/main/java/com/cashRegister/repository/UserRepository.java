@@ -13,6 +13,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class works with users
+ */
 public class UserRepository {
 
     private static final String INSERT_USER = "INSERT INTO users" +

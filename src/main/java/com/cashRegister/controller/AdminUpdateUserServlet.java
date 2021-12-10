@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The class is responsible for update Users
+ */
 @WebServlet("/userUpdate")
 public class AdminUpdateUserServlet extends HttpServlet {
 

@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class works with roles
+ */
 public class RoleRepository {
     public static final String SELECT_ALL_ROLES = "SELECT * FROM roles;";
 

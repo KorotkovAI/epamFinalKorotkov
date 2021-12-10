@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The class is responsible for opening the shift
+ */
 @WebServlet(WebAdresses.OPEN_SHIFT)
 public class AdminOpenShiftServlet extends HttpServlet {
 

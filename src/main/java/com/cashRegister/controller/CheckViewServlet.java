@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The class is responsible for view check information
+ */
 @WebServlet("/checkView")
 public class CheckViewServlet extends HttpServlet {
 

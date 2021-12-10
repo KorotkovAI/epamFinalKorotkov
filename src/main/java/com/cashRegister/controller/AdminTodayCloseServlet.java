@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * The class is responsible for close shift
+ */
 @WebServlet(WebAdresses.ADMIN_TODAY_CLOSE)
 public class AdminTodayCloseServlet extends HttpServlet {
 

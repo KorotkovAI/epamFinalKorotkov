@@ -2,6 +2,9 @@ package com.cashRegister.model;
 
 import java.util.Objects;
 
+/**
+ * This class simulates a user
+ */
 public class User {
     private int id;
     private String login;

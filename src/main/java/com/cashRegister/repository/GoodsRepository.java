@@ -11,6 +11,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class works with goods
+ */
 public class GoodsRepository {
     private static final String SELECT_ALL_GOODS = "SELECT * FROM goods;";
     private static final String UPDATE_GOODS = "UPDATE goods SET name = ?, amount = ?, price = ? WHERE id = ?;";

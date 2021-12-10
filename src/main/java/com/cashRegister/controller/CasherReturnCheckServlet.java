@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The class is responsible for returning current check
+ */
 @WebServlet(WebAdresses.CASHER_RETURN_CHECK)
 public class CasherReturnCheckServlet extends HttpServlet {
 

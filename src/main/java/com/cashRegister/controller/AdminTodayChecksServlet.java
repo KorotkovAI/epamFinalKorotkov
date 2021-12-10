@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * The class is responsible for view opened checks
+ */
 @WebServlet(WebAdresses.ADMIN_TODAY_CHECKS)
 public class AdminTodayChecksServlet extends HttpServlet {
 

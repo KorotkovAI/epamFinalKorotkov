@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The class is responsible for view list of users
+ */
 @WebServlet("/users")
 public class UsersListServlet extends HttpServlet {
     private final UserRepository userRepository;

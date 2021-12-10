@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * The class is responsible for view casher general information
+ */
 @WebServlet(WebAdresses.CASHER_START_PAGE)
 public class CasherStartServlet extends HttpServlet {
 

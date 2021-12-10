@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
+/**
+ * The class is responsible for delete goods
+ */
 @WebServlet("/deleteGoods")
 public class ExpertDeleteGoodsServlet extends HttpServlet {
 

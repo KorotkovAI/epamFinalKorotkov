@@ -3,6 +3,9 @@ package com.cashRegister.model;
 
 import java.util.Objects;
 
+/**
+ * This class simulates a role
+ */
 public class Role {
     private int id;
     private String name;

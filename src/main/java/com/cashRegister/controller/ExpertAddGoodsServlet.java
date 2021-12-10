@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The class is responsible for goods add
+ */
 @WebServlet("/goodsAdd")
 public class ExpertAddGoodsServlet extends HttpServlet {
 

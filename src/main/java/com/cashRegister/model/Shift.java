@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * This class simulates a shift
+ */
 public class Shift {
     private int id;
     private boolean isOpen;

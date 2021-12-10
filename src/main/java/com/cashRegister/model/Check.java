@@ -3,6 +3,9 @@ package com.cashRegister.model;
 import java.sql.Timestamp;
 import java.util.Objects;
 
+/**
+ * This class simulates a check
+ */
 public class Check {
     private int id;
     private double sum;

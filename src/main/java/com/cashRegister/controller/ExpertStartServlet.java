@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-
+/**
+ * The class is responsible for view expert general information
+ */
 @WebServlet("/expertStart")
 public class ExpertStartServlet extends HttpServlet {
     private final GoodsRepository goodsRepository;

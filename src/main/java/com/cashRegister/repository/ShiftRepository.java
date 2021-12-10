@@ -11,6 +11,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class works with shifts
+ */
 public class ShiftRepository {
 
     private static final String ALL_OPEN_SHIFTS = "SELECT * FROM shifts WHERE isOpen = 1;";

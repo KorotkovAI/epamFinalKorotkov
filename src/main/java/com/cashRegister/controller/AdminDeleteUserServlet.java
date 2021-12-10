@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The class is responsible for deleting users
+ */
 @WebServlet("/deleteUser")
 public class AdminDeleteUserServlet extends HttpServlet {
 

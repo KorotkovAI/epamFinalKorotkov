@@ -21,6 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The class is responsible for start creating check
+ */
 @WebServlet("/createCheck")
 public class CasherCreateCheckServlet extends HttpServlet {
 

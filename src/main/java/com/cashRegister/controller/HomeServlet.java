@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-
+/**
+ * The class is responsible for view start page
+ */
 @WebServlet(value = {"/", "/home"})
 public class HomeServlet extends HttpServlet {
     private final UserRepository userRepository;

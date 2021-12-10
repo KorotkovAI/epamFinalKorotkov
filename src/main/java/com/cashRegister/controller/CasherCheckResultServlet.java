@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The class is responsible for view result check
+ */
 @WebServlet(WebAdresses.CASHER_CHECK_RESULT_SERVLET)
 public class CasherCheckResultServlet extends HttpServlet {
 

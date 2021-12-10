@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The class is responsible for delete from check
+ */
 @WebServlet(WebAdresses.CASHER_DELETE_GOODS_FROM_CHECK)
 public class CasherDeleteFromCheckServlet extends HttpServlet {
 

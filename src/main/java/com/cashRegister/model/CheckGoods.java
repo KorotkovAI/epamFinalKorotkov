@@ -2,6 +2,9 @@ package com.cashRegister.model;
 
 import java.util.Objects;
 
+/**
+ * This class simulates a goods for check
+ */
 public class CheckGoods {
     private int id;
     private int idGoods;
