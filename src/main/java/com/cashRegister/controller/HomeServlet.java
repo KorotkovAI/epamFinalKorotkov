@@ -3,7 +3,6 @@ package com.cashRegister.controller;
 import com.cashRegister.model.User;
 import com.cashRegister.WebAdresses;
 import com.cashRegister.repository.UserRepository;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,8 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+
 /**
- * The class is responsible for view start page
+ * The class is responsible for view list of users
  */
 @WebServlet(value = {"/", "/home"})
 public class HomeServlet extends HttpServlet {
@@ -51,24 +51,20 @@ public class HomeServlet extends HttpServlet {
                 currentRole = user.getRoleName().getName();
                 req.getSession().setAttribute("user", user);
                 flag = false;
-
-                switch (currentRole) {
-                    case "Admin":
-                        forwardPage = WebAdresses.ADMIN_START_PAGE;
-                        break;
-                    case "Casher":
-                        forwardPage = WebAdresses.CASHER_START_PAGE;
-                        break;
-                    case "CommodityExpert":
-                        forwardPage = "/expertStart";
-                        break;
-                    default:
-                        log.log(Level.ERROR, "can't find such role" + HomeServlet.class.getName());
-                        break;
+                if (currentRole.equals("Admin")) {
+                    forwardPage = WebAdresses.ADMIN_START_PAGE;
+                    requestDispatcher = req.getRequestDispatcher(forwardPage);
+                    requestDispatcher.forward(req, resp);
+                } else if (currentRole.equals("Casher")) {
+                    forwardPage = WebAdresses.CASHER_START_PAGE;
+                    requestDispatcher = req.getRequestDispatcher(forwardPage);
+                    requestDispatcher.forward(req, resp);
+                } else if (currentRole.equals("CommodityExpert")) {
+                    forwardPage = "/expertStart";
+                    resp.sendRedirect(forwardPage);
+                } else {
+                    resp.sendRedirect(forwardPage);
                 }
-
-                requestDispatcher = req.getRequestDispatcher(forwardPage);
-                requestDispatcher.forward(req, resp);
             }
         }
 
